@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Consultant Management</title>
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendors/custom.min.css" rel="stylesheet">
+    <link href="/vendors/login.css" rel="stylesheet">
+</head>
+
+<body class="nav-md" style="background:#fff">
+<div id="pmo">
+    <div class="row"  v-show="!loadfinish">
+        <div class="col-md-8 col-sm-8 col-xs-8" style="text-align:center"><h3>Loading......</h3></div>
+
+    </div>
+    <div class="row"  style="display:none" v-show="loadfinish">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="pricing">
+                <div class="title">
+                    <h2>Daily Entry </h2>
+                    <h3>{{nowTime}}</h3>
+                </div>
+                <div class="x_content" >
+                    <br />
+                    <div  v-if="record" class="col-md-12 col-sm-12 col-xs-12 profile_details">
+                        <div class="well profile_view center" style="margin:0 auto">
+                            <div class="col-sm-12">
+                                <h4 class="brief"><i>Entry Record</i></h4>
+                                <div class="center col-xs-12 col-sm-12">
+                                    <h2>{{record.personName}}</h2>
+                                    <p><strong>Please Close The Window </strong>  </p>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fa fa-building"></i> {{record.addr}} </li>
+                                        <li><i class="fa fa-comment"></i> {{record.desc}} </li>
+                                        <li><i class="fa fa-clock-o"></i> {{showCreateTime()}} </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 bottom text-center">
+                                <div class="col-xs-12 col-sm-6 emphasis">
+                                    <p class="ratings">
+                                        <a>{{record.period}}</a>
+                                    </p>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 emphasis">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="demo-form2"  class="form-horizontal form-label-left" v-if="status==='record' || status==='process'">
+                        <div class="form-group" v-if="err">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label class="control-label col-md-10 col-sm-10 col-xs-12" style="color:#ff0000">Operate Failure,Pls Retry:{{err}}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tasks <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select name="taskId" data-rule="required" class="form-control" v-model="taskId">
+                                    <option v-for="t in tasks"  :value="t._id">
+                                        {{ t.taskId }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" v-if="chooseTask!=null && personId==chooseTask.pmId">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Cash</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                                <input type="number" 	data-parsley-type="number" v-model="cash" id="cash" name="cash"   class="form-control">
+                                <span class="fa fa-money form-control-feedback right" aria-hidden="true"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" v-if="chooseTask!=null && personId==chooseTask.pmId">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Completed Milestone</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                                <select   placeholder="Choose Completed Milestone" v-model="completedMilestone" id="completedMilestone" name="completedMilestone" class="form-control"  >
+                                    <option value="">Choose..</option>
+                                    <option v-for="milestone in milestones"  :value="milestone">
+                                        {{ milestone }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Desc</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 has-feedback">
+                                <textarea v-model="desc"  required class="resizable_textarea form-control" maxlength="200" ></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" v-show="inputerr">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                <ul class="parsley-errors-list filled" id="parsley-id-5"><li class="parsley-required">Pls Input Desc!</li></ul>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <button v-if="hours>=6" type="button" id="ambtn" class="btn btn-block btn-primary" @click="entry('AM', $event)"><span class="glyphicon"></span><span>AM</span></button>
+
+                                     <button  v-if="hours>=12" type="button" id="pmbtn" class="btn btn-block btn-info" @click="entry('PM', $event)"><span class="glyphicon"></span><span>PM</span></button>
+
+                                     <button  v-if="hours>=17 || hours<6" type="button" id="otbtn" class="btn btn-block btn-success" @click="entry('OT', $event)"><span class="glyphicon"></span><span>OT</span></button>
+
+
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                        <input type="hidden" name="u"  id="u" value="<%=u %>"/>
+                        <%if (channel){%>
+                        <input type="hidden" name="channel"  id="channel" value="<%=channel %>" v-if="channel!=null"/>
+                        <%}%>
+                    </form>
+                </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="/vendors/jquery/dist/jquery.min.js"></script>
+<script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/vendors/moment/min/moment.min.js"></script>
+<script src="/js/dist/engine.js"></script>
+<script src="/js/dist/attendance.js"></script>
+</body>
+</html>

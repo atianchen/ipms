@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Consultant Management</title>
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="/vendors/animate.css/animate.min.css" rel="stylesheet">
+    <link href="/vendors/custom.min.css" rel="stylesheet">
+    <link href="/vendors/login.css" rel="stylesheet">
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="/vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="/js/bindupe.js"></script>
+</head>
+
+<body class="login">
+<div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+
+    <div class="login_wrapper">
+        <div class="animate form login_form">
+            <section class="login_content">
+                <form id="loginForm" action="/upe/upeBound" method="post">
+                    <h1>Space Account Bind</h1>
+                    <div>
+                        <%= spaceUser["name"]%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= spaceUser["email"]%>
+                    </div>
+                    <div>
+                      <%= spaceUser["dept_name"]%>
+                    </div>
+                    <div>
+                        <input type="text" id="userId" class="form-control" placeholder="CMS Account" required=""  data-parsley-required-message="Please Input CMS Account"/>
+                    </div>
+                    <div>
+                        <input type="password" id="pwd" class="form-control" placeholder="CMS Login Password" required=""  data-parsley-required-message="Please Input Password For Login CMS"/>
+                    </div>
+                    <div class="error">
+                        Sorry,you entered an incorrect user's Id or password.
+                    </div>
+                    <div>
+                        <button type="button" id="bindbtn" class="btn btn-md btn-warning"><span class="glyphicon"></span><span>Bind</span></button>
+                        <!--  <a class="reset_pass" href="#">Lost your password?</a>-->
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+                        <!-- <p class="change_link">New to site?
+                             <a href="#signup" class="to_register"> Create Account </a>
+                         </p>-->
+
+                        <div class="clearfix"></div>
+                        <br />
+
+                        <div>
+                            <h1>Yonyou CMS</h1>
+                            <p>©2016 Yonyou HK  All Rights Reserved. </p>
+                        </div>
+                    </div>
+                    <input type="hidden"  name="upeMemberId" id="upeMemberId" value="<%=upeMemberId %>"/>
+                    <input type="hidden" id="target" value="<%=target %>"/>
+                </form>
+            </section>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
