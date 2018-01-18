@@ -1,0 +1,89 @@
+<template>
+    <div class="grid">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Consultant <small>Manage consultant information</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row qrbar">
+                           <ul>
+                               <li>
+                                     <div class="input-group">
+                                         <input type="text" class="form-control  col-md-2" v-model="q.userId" placeholder="UserId">
+                                     </div>
+                               </li>
+                               <li>
+                                   <div class="input-group">
+                                       <input type="text" class="form-control  col-md-2" v-model="q.groupName" placeholder="GroupName">
+                                   </div>
+                               </li>
+                               <li>
+                                    <button type="button" class="btn btn-default" @click="pageSearch">Search</button>
+                               </li>
+                             </ul>
+                    </div>
+                    <div class="table-responsive">
+                        <hy-grid :columns="gridColumns" :data="gridData"  v-on:itemClick="itemClick"></hy-grid>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-1">
+                        <button type="button" class="btn btn-primary" @click='createPerson'>New</button>
+                    </div>
+                    <hy-gridPager :page="page"  v-on:paginationClick="pagination"></hy-gridPager>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import Grid from '../ctrl/Grid.vue'
+import GridPager from '../ctrl/GridPager.vue'
+import {util} from '../../dist/pageHelper.js'
+
+export default {
+  data () {
+    return {
+      q:{},
+      gridColumns: [{title:"User Id",name:"userId",click:"_id"},{title:"Name",name:"name"},{title:"Email",name:"email"},{title:"Role",name:"role"},{title:"Position",name:"position.code"},{title:"LevelRate",name:"position.levelRate"},{title:"GroupName",name:"groupName"},{title:"Mobile",name:"mobile"},{title:"CreateDate",name:"createDate",type:"date",format:"DD/MM/YYYY"}],
+      gridData:[],
+      page:{}
+    }
+  },
+  created:function(){
+        let _self=this;
+        $.post("/project/person/list").done((rs)=>{
+            _self.gridData=rs.data;_self.page=rs.page;
+        }).fail(function(){})
+  },
+  methods: {
+        createPerson:function(ev){this.$router.push("/project/personAdd");},
+        itemClick: function (param) {
+            this.$router.push({ name:'personEdit', params: { personId: param }})
+         },
+         pagination:function(page)
+         {
+             this.page.pn = page;
+            this.pageSearch();
+         },
+         pageSearch:function()
+         {
+            let _self=this;
+            $.post("/project/person/list",{q:util.qfilter(this.q),page:this.page}).done((rs)=>{
+            _self.gridData=rs.data;_self.page=rs.page;}).fail(function(){})
+         }
+    },
+    components: {
+     'hy-grid': Grid,
+     'hy-gridPager': GridPager
+  }
+}
+</script>
+
