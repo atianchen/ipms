@@ -11,7 +11,9 @@
   "dependencies": {
     "@slack/client": "^3.8.1",
     "async": "^2.1.4",
+    "axios": "^0.17.1",
     "body-parser": "^1.15.2",
+    "ejs": "^2.5.7",
     "express": "^4.14.0",
     "express-session": "^1.14.2",
     "gulp": "^3.9.1",
@@ -19,12 +21,13 @@
     "mongodb": "^2.2.20",
     "mongoose": "^4.7.7",
     "multiparty": "^4.1.3",
+    "node-xlsx": "^0.11.2",
     "simple-ajax-uploader": "^2.5.5",
     "superagent": "^3.3.2",
-    "vue": "^2.1.0",
+    "vue": "^2.5.13",
     "vue-file-upload": "^0.1.1",
-    "vue-router": "^2.1.1",
-    "vuex": "^2.1.1"
+    "vue-router": "^2.8.1",
+    "vuex": "^2.5.0"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
@@ -33,8 +36,8 @@
     "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
-    "vue-loader": "^10.0.0",
-    "vue-template-compiler": "^2.1.0",
+    "vue-loader": "^10.3.0",
+    "vue-template-compiler": "^2.5.13",
     "webpack": "^2.1.0-beta.25",
     "webpack-dev-server": "^2.1.0-beta.9"
   }
