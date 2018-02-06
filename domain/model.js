@@ -303,8 +303,23 @@ class AccessToken
     }
     getCollection(){return "accesstoken"}
 }
+class Calendar
+{
+    getFieldDefin()
+    {
+        return {
+            year:{type:INT},
+            month:{type:INT},
+            date:{type :INT},
+            fullDate:{type:DATE,format:"DD/MM/YYYY"},//yyyy-mm-dd
+            monthweekId:{type:REF,join:{col:'monthweek'},alias:"monthweek"},// monthweek relation ,ManyToOne
+            yearweekId:{type:REF,join:{col:'yearweek'},alias:"yearweek"},// yearweek relation ,ManyToOne
+        };
+    }
+    getCollection(){return "calendar"}
+}
 /**
- * 第几周
+ * 年第几周
  */
 class YearWeek
 {
@@ -320,6 +335,22 @@ class YearWeek
     getCollection(){return "yearweek"}
 }
 /**
+ * 月第几周
+ */
+class MonthWeek
+{
+    getFieldDefin()
+    {
+        return {
+            year:{type:INT},
+            month:{type:INT},
+            startDate:{type:DATE,format:"DD/MM/YYYY"},
+            endDate:{type:DATE,format:"DD/MM/YYYY"}
+        };
+    }
+    getCollection(){return "monthweek"}
+}
+/**
  * 周收入预测
  */
 class WeekCashForecast
@@ -327,7 +358,7 @@ class WeekCashForecast
     getFieldDefin()
     {
         return {
-            yearweekId:{type:REF,join:{col:'yearweek'},alias:"yearweek"},// yearweek relation ,ManyToOne
+            monthweekId:{type:REF,join:{col:'monthweek'},alias:"monthweek"},// yearweek relation ,ManyToOne
             cash:{type:DOUBLE}
         };
     }
@@ -345,7 +376,7 @@ class YearCashForecast
             weekcashSet:{type:REFSET,join:{col:'weekcashforecast'},alias:"weekcash"},
         };
     }
-    getCollection(){return "weekcashforecast"}
+    getCollection(){return "yearcashforecast"}
 }
 exports.Person = Person;
 exports.Project = Project;
