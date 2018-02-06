@@ -303,6 +303,50 @@ class AccessToken
     }
     getCollection(){return "accesstoken"}
 }
+/**
+ * 第几周
+ */
+class YearWeek
+{
+    getFieldDefin()
+    {
+        return {
+            year:{type:INT},
+            month:{type:INT},
+            startDate:{type:DATE,format:"DD/MM/YYYY"},
+            endDate:{type:DATE,format:"DD/MM/YYYY"}
+        };
+    }
+    getCollection(){return "yearweek"}
+}
+/**
+ * 周收入预测
+ */
+class WeekCashForecast
+{
+    getFieldDefin()
+    {
+        return {
+            yearweekId:{type:REF,join:{col:'yearweek'},alias:"yearweek"},// yearweek relation ,ManyToOne
+            cash:{type:DOUBLE}
+        };
+    }
+    getCollection(){return "weekcashforecast"}
+}
+/**
+ * 年收入预测
+ */
+class YearCashForecast
+{
+    getFieldDefin()
+    {
+        return {
+            /*other properties*/
+            weekcashSet:{type:REFSET,join:{col:'weekcashforecast'},alias:"weekcash"},
+        };
+    }
+    getCollection(){return "weekcashforecast"}
+}
 exports.Person = Person;
 exports.Project = Project;
 exports.Role = Role;
