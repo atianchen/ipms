@@ -28,12 +28,11 @@ exports.get=(col,id,callback,connection)=>{
     },connection);
 };
 
-function aliasQuery(entity,ref,callback,connection)
+function aliasQuery(defins,entity,ref,callback,connection)
 {
-    let defins = entity.getFieldDefin();
     if (defins[ref])
     {
-        db.find(defins[ref].join.col, {_id: item[ref]},null, function (err, rs) {
+        db.find(defins[ref].join.col, {_id: entity[ref]},null, function (err, rs) {
             if (err)
                 callback(err);
             else {
@@ -44,8 +43,9 @@ function aliasQuery(entity,ref,callback,connection)
         }, connection);
     }
 }
-exports.aliasGet=(col,alias,id,callback,connection)=>{
-    db.getDb(function(err,db){
+exports.aliasGet=(entity,alias,id,callback,connection)=>{
+    let defins = entity.getFieldDefin();
+    db.getDb(function(err,connection){
         if (err)callback(err);
         else
         {
@@ -53,17 +53,17 @@ exports.aliasGet=(col,alias,id,callback,connection)=>{
             {
                 if (rs.length>0) {
                     async.eachSeries(alias, function (a, cb) {
-                        aliasQuery(rs[0], a, cb, db);
+                        aliasQuery(defins,rs[0], a, cb, connection);
                     }, function (err) {
-                        db.close();
+                        connection.close();
                         callback(err,rs[0]);
                     });
                 }
                 else {
-                    db.close();
+                    connection.close();
                     callback(null);
                 }
-            },db);
+            },connection);
         }
     });
 };

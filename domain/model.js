@@ -342,6 +342,9 @@ class MonthWeek
     getFieldDefin()
     {
         return {
+            title:{type:STRING},
+            seq:{type:INT},
+            yearSeq:{type:INT},
             year:{type:INT},
             month:{type:INT},
             startDate:{type:DATE,format:"DD/MM/YYYY"},
@@ -359,7 +362,14 @@ class WeekCashForecast
     {
         return {
             monthweekId:{type:REF,join:{col:'monthweek'},alias:"monthweek"},// yearweek relation ,ManyToOne
-            cash:{type:DOUBLE}
+            cash:{type:DOUBLE},
+            personId:{type:REF,join:{col:'person'},alias:"person"},
+            seq:{type:INT},
+            year:{type:INT},
+            month:{type:INT},
+            startDate:{type:DATE,format:"DD/MM/YYYY"},
+            endDate:{type:DATE,format:"DD/MM/YYYY"}
+
         };
     }
     getCollection(){return "weekcashforecast"}
@@ -387,7 +397,7 @@ class YearCashForecast
     {
         return {
             /*other properties*/
-            weekcashSet:{type:REFSET,join:{col:'weekcashforecast'},alias:"weekcash"},
+            weekcashSet:{type:REFSET,join:{col:'weekcashforecast'},alias:"weekcash"}
         };
     }
     getCollection(){return "yearcashforecast"}
@@ -483,7 +493,9 @@ exports.Position = Position;
 exports.Currency = Currency;
 exports.AccessToken = AccessToken;
 exports.Division = Division;
-exports.ProjectStatus = Projectstatus;
-exports.CAInvoiceactual = CaInvoiceactual;
+exports.MonthWeek = MonthWeek;
+exports.ProjectStatus = ProjectStatus;
+exports.CAInvoiceactual = CAInvoiceActual;
 exports.Cashinforecast = Cashinforecast;
 exports.Accrualforecast = Accrualforecast;
+exports.WeekCashForecast = WeekCashForecast;
