@@ -364,6 +364,20 @@ class WeekCashForecast
     }
     getCollection(){return "weekcashforecast"}
 }
+/*
+*周权责预测
+ */
+class WeekAccrualForecast
+{
+    getFieldDefin()
+    {
+        return{
+            monthweekId:{type:REF,join:{col:'monthweek'},alias:"monthweek"},
+            accrual:{type:DOUBLE}
+        };
+    }
+    getCollection(){return "weekaccrualforecast"}
+}
 /**
  * 年收入预测
  */
@@ -378,6 +392,83 @@ class YearCashForecast
     }
     getCollection(){return "yearcashforecast"}
 }
+/*
+* 年权责预测
+*/
+
+class YearAccrualForecast
+{
+    getFieldDefin()
+    {
+        return{
+            weekaccrualSet:{type:REFSET,join:{col:'weekaccrualforecast'},alias:'weekaccrual'},
+        }
+    };
+    getCollection(){return "yearaccrualforecast"}
+}
+class ProjectStatus{
+    getFieldDefin() {
+        return {
+            projectstatus: {type: STRING},
+            abbr: {type: STRING}
+        };
+        }
+        getCollection(){return "projectstatus"}
+
+}
+
+class CAInvoiceActual{
+    getFieldDefin(){
+        return {
+            contractId: {type:REF, join:{col:'contract'},alias:'ContractId'},
+            customer: {type:STRING},
+            projectId:{type:REF,join:{col:'project'},alias:'ProjectId'},
+            amount:{type:STRING},
+            currency:{type:STRING},
+            cash:{type:DOUBLE},
+            cashindate:{type:DATE},
+            completemilestone:{type:REF,join:{col:'milestone'},alias:'milestone'},
+            confirmdate:{type:DATE},
+            invoiceamount:{type:DOUBLE},
+            invoicedate:{type:DATE}
+        };
+    }
+    getCollection(){return "cainvoiceactual"}
+}
+class Cashinforecast{
+    getFieldDefin(){
+        return{
+            entrysysdate: {type: DATE},
+            contractId:{type:REF,join:{col:'contract'},alias:'ContractId'},
+            customer:{type:STRING},
+            projectId:{type:REF,join:{col:'project'},alias:'ProjectId'},
+            amount:{type:DOUBLE},
+            currency:{type:STRING},
+            payment:{type:STRING},
+            monthweek:{type:REFSET,join:{col:'MonthWeek'},alias:'monthweek'},
+            weekcashforcast: {type:REFSET,join:{col:'weekcashforcast'},alias:'weekcash'}
+        };
+    }
+    getCollection(){return "cashinforecast"}
+}
+
+class Accrualforecast{
+    getFieldDefin(){
+        return{
+            entrysysdate:{type: DATE},
+            projectId:{type:REF,join:{col:'project'},alias:'ProjectId'},
+            customer:{type:STRING},
+            contractId:{type:REF,join:{col:'contract'}},
+            amount:{type:DOUBLE},
+            currency:{type:STRING},
+            currentmilestone:{type:STRING},
+            monthweek:{type:REFSET,join:{col:'MonthWeek'},alias:'MonthWeek'},
+            weekaccrualforecast:{type:REFSET,join:{col:'weekaccrualforecast'},alias:'weekaccrual'}
+        };
+    }
+    getCollection(){return "accrualforecast"}
+}
+
 exports.Person = Person;
 exports.Project = Project;
 exports.Role = Role;
@@ -392,3 +483,7 @@ exports.Position = Position;
 exports.Currency = Currency;
 exports.AccessToken = AccessToken;
 exports.Division = Division;
+exports.ProjectStatus = Projectstatus;
+exports.CAInvoiceactual = CaInvoiceactual;
+exports.Cashinforecast = Cashinforecast;
+exports.Accrualforecast = Accrualforecast;
