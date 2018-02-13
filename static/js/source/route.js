@@ -43,15 +43,18 @@ const routes=[
     { path: '/project/contractList',name:'contractList', component:  resolve=>require(["./project/ContractGrid.vue"],resolve) },
     { path: '/project/contractAdd',name:'contractAdd', component:  resolve=>require(["./project/ContractEdit.vue"],resolve) },
     { path: '/project/contractEdit/:contractId',name:'contractEdit', component:  resolve=>require(["./project/ContractEdit.vue"],resolve) },
-    { path: '/project/projectList',name:'projectList', component:  resolve=>require(["./setting/PositionGrid.vue"],resolve) },
-    { path: '/project/projectAdd',name:'projectAdd', component:  resolve=>require(["./setting/PositionEdit.vue"],resolve) },
-    { path: '/project/projectEdit/:projId',name:'projectEdit', component:  resolve=>require(["./setting/PositionEdit.vue"],resolve) },
+    { path: '/project/projectList',name:'projectList', component:  resolve=>require(["./project/ProjectGrid.vue"],resolve) },
+    { path: '/project/projectAdd',name:'projectAdd', component:  resolve=>require(["./project/ProjectEdit.vue"],resolve) },
+    { path: '/project/projectEdit/:projId',name:'projectEdit', component:  resolve=>require(["./project/ProjectEdit.vue"],resolve) },
     { path: '/project/recordList',name:'recordList', component:  resolve=>require(["./project/RecordGrid.vue"],resolve) },
     { path: '/project/recordAdd',name:'recordAdd', component:  resolve=>require(["./project/RecordEdit.vue"],resolve) },
     { path: '/project/recordEdit/:recordId',name:'recordEdit', component:  resolve=>require(["./project/RecordEdit.vue"],resolve) },
 
     { path: '/rpt/milestoneRecord',name:'milestoneRecord', component:  resolve=>require(["./rpt/MilestoneRecord.vue"],resolve) },
-    { path: '/rpt/cashAccrualReport',name:'cashAccrualReport', component:  resolve=>require(["./rpt/CashAccrualReport.vue"],resolve) }
+    { path: '/rpt/cashAccrualReport',name:'cashAccrualReport', component:  resolve=>require(["./rpt/CashAccrualReport.vue"],resolve) },
+
+    { path: '/im/listForecastProj',name:'listForecastProj', component:  resolve=>require(["./IM/listForecastProj.vue"],resolve) },
+    { path: '/im/cashForcast/:projId',name:'cashForcast', component:  resolve=>require(["./IM/cashForcast.vue"],resolve) }
 ];
 export default new VueRouter({
     routes: routes

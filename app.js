@@ -68,7 +68,7 @@ app.use('/rpt/',require('./action/report/charts'));
 app.use('/rpt/',require('./action/report/report'));
 app.use('/rpt',require('./action/report/careport'));
 app.use('/upe',require('./action/upe/index'));
-
+app.use('/im',require('./action/IM/cashinforecast'));
 const server = app.listen(3000, function () {
     let host = server.address().address;
     let port = server.address().port;
