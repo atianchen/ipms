@@ -382,8 +382,14 @@ class WeekAccrualForecast
     getFieldDefin()
     {
         return{
-            monthweekId:{type:REF,join:{col:'monthweek'},alias:"monthweek"},
-            accrual:{type:DOUBLE}
+            monthweekId:{type:REF,join:{col:'monthweek'},alias:"monthweek"},// yearweek relation ,ManyToOne
+            accrual:{type:DOUBLE},
+            personId:{type:REF,join:{col:'person'},alias:"person"},
+            seq:{type:INT},
+            year:{type:INT},
+            month:{type:INT},
+            startDate:{type:DATE,format:"DD/MM/YYYY"},
+            endDate:{type:DATE,format:"DD/MM/YYYY"}
         };
     }
     getCollection(){return "weekaccrualforecast"}
@@ -473,7 +479,7 @@ class Accrualforecast{
             currency:{type:STRING},
             currentmilestone:{type:STRING},
             monthweek:{type:REFSET,join:{col:'MonthWeek'},alias:'MonthWeek'},
-            weekaccrualforecast:{type:REFSET,join:{col:'weekaccrualforecast'},alias:'weekaccrual'}
+            weekaccrualforecast:{type:REFSET,join:{col:'weekaccrualforecast'},alias:'weekaccrualforecast'}
         };
     }
     getCollection(){return "accrualforecast"}
@@ -499,3 +505,4 @@ exports.CAInvoiceactual = CAInvoiceActual;
 exports.Cashinforecast = Cashinforecast;
 exports.Accrualforecast = Accrualforecast;
 exports.WeekCashForecast = WeekCashForecast;
+exports.WeekAccrualForecast = WeekAccrualForecast;
