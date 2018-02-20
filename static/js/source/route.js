@@ -54,7 +54,9 @@ const routes=[
     { path: '/rpt/cashAccrualReport',name:'cashAccrualReport', component:  resolve=>require(["./rpt/CashAccrualReport.vue"],resolve) },
 
     { path: '/im/listForecastProj',name:'listForecastProj', component:  resolve=>require(["./IM/listForecastProj.vue"],resolve) },
-    { path: '/im/cashForcast/:projId',name:'cashForcast', component:  resolve=>require(["./IM/cashForcast.vue"],resolve) }
+    { path: '/im/cashForcast/:projId',name:'cashForcast', component:  resolve=>require(["./IM/cashForcast.vue"],resolve) },
+    { path: '/im/listPmForecastProj',name:'listPmForecastProj', component:  resolve=>require(["./IM/listPmForecastProj.vue"],resolve) },
+    { path: '/im/accuralForecast/:projId',name:'accuralForecast', component:  resolve=>require(["./IM/accuralForecast.vue"],resolve) }
 ];
 export default new VueRouter({
     routes: routes
