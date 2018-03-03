@@ -37,7 +37,7 @@
                 gridColumns: [{title:"Week",name:"title",exp:function(data)
                     {
                         return moment(data.startDate*1000).format("MMMM")+"-WK"+(data.seq+1);
-                    }},{title:"",name:"seq",click:"seq",exp:function()
+                    }},{title:"Start Date",name:"startDate",type:"date",format:"DD/MM/YYYY"},{title:"End Date",name:"endDate",type:"date",format:"DD/MM/YYYY"},{title:"",name:"seq",click:"seq",exp:function()
                     {
                       return "Plan Edit";
                     }}],
