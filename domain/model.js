@@ -485,6 +485,25 @@ class Accrualforecast{
     getCollection(){return "accrualforecast"}
 }
 
+class WeekPlan
+{
+    getFieldDefin()
+    {
+        return{
+            monthweekId:{type:REF,join:{col:'monthweek'},alias:"monthweek"},
+            personId:{type:REF,join:{col:'person'},alias:"person"},
+            projectId:{type:REF,join:{col:'project'},alias:'proj'},
+            year:{type:INT},
+            month:{type:INT},
+            day:{type:INT},
+            planDate:{type:DATE,format:"DD/MM/YYYY"},
+            milestone:{type:STRING},
+            period:{type:STRING}
+        };
+    }
+    getCollection(){return "weekplan"}
+}
+
 exports.Person = Person;
 exports.Project = Project;
 exports.Role = Role;
@@ -506,3 +525,4 @@ exports.Cashinforecast = Cashinforecast;
 exports.Accrualforecast = Accrualforecast;
 exports.WeekCashForecast = WeekCashForecast;
 exports.WeekAccrualForecast = WeekAccrualForecast;
+exports.WeekPlan = WeekPlan;
