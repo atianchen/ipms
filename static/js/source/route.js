@@ -56,9 +56,7 @@ const routes=[
     { path: '/im/listForecastProj',name:'listForecastProj', component:  resolve=>require(["./IM/listForecastProj.vue"],resolve) },
     { path: '/im/cashForcast/:projId',name:'cashForcast', component:  resolve=>require(["./IM/cashForcast.vue"],resolve) },
     { path: '/im/listPmForecastProj',name:'listPmForecastProj', component:  resolve=>require(["./IM/listPmForecastProj.vue"],resolve) },
-    { path: '/im/accuralForecast/:projId',name:'accuralForecast', component:  resolve=>require(["./IM/accuralForecast.vue"],resolve) },
-    { path: '/im/listcashinvoiceActual',name:'listcashinvoiceActual', component: resolve=>require(["./IM/listcashinvoiceActual.vue"],resolve)},
-    { path: '/im/cashinvoiceActual/:projectId',name:'cashinvoiceActual', component: resolve=>require(["./IM/cashinvoiceActual.vue"],resolve)},
+    { path: '/im/accuralForecast/:projId',name:'accuralForecast', component:  resolve=>require(["./IM/accuralForecast.vue"],resolve) }
 ];
 export default new VueRouter({
     routes: routes

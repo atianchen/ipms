@@ -12,6 +12,7 @@ const appContext = require('../../ctx/appContext');
 const Constants = require('../../ctx/constants').Constants;
 const {MonthWeek,Project,WeekCashForecast} = require('../../domain/model');
 const projectStatus = require('../../db/constants').projectStatus;
+const logger = require("../../util/logger").log;
 const {ObjectId} = require('mongodb');
 router.post("/listForecastProj",function(req,res){
     let page = wb.getPagination(req);
@@ -30,6 +31,7 @@ router.post("/listForecastProj",function(req,res){
         model.data = rs;
         res.json(model);
     });
+
 });
 
 router.post("/getCashForecast",function(req,res){
@@ -128,7 +130,7 @@ router.post("/saveCashForecast",function(req,res){
 
                     },
                     function(err, results) {
-
+                        try { connection.close(); } catch (e){logger.err(e);}
                       if (err)
                           res.json({err:err});
                       else
