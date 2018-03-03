@@ -11,7 +11,7 @@
              <tr v-for="(entry,index) in data" class="pointer" v-bind:class="[(index%2==0) ? 'even' : 'odd']">
                    <td v-for="col in columns">
                        <template v-if="col.click">
-                           <a @click="itemClick(entry[col.click])" > {{entry[col.name]}}</a>
+                           <a @click="itemClick(entry[col.click],entry)" v-html="renderItem(col,entry)"></a>
                        </template>
                        <template v-else>
                            {{renderItem(col,entry)}}
@@ -60,8 +60,8 @@ export default {
          return val;
     }
   },
-    itemClick: function (param) {
-            this.$emit('itemClick',param)
+    itemClick: function (param,entry) {
+            this.$emit('itemClick',param,entry)
     }
   }
 }

@@ -8,6 +8,7 @@ const orm = require('../../db/orm');
 const db = require('../../db/db');
 const wb = require('../../util/webutils');
 const moment = require('moment');
+const logger = require("../../util/logger").log;
 const appContext = require('../../ctx/appContext');
 const Constants = require('../../ctx/constants').Constants;
 const {MonthWeek,Project,WeekAccrualForecast} = require('../../domain/model');
@@ -123,7 +124,7 @@ router.post("/saveAccuralForecast",function(req,res){
 
                 },
                 function(err, results) {
-
+                    try { connection.close(); } catch (e){logger.err(e);}
                     if (err)
                         res.json({err:err});
                     else
