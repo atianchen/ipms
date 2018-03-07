@@ -187,7 +187,9 @@ exports.pagingquery = (entity,condition,page,callback,connection)=>{
 exports.pagejoinquery = (entity,alias,condition,page,callback,connection)=>
 {
     let opts = {start:page.pn*page.ps,limit:page.ps};
-    let defins = entity.getFieldDefin();
+    if (page.sort)
+        opts.sort = page.sort;
+  let defins = entity.getFieldDefin();
     db.getDb(function(err,connection){
         if (err)callback(err);
         else
