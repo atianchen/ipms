@@ -3,7 +3,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Week <small>Choose Week for plan</small></h2>
+                    <h2>Week<small>Choose Week</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
 
                     </ul>
@@ -36,7 +36,7 @@
                 q:{},
                 gridColumns: [{title:"Week",name:"title",exp:function(data)
                     {
-                        return moment(data.startDate*1000).format("MMMM")+"-WK"+(data.seq+1);
+                        return moment(data.startDate*1000).format("YYYY")+"-WK"+(data.yearSeq+1);
                     }},{title:"Start Date",name:"startDate",type:"date",format:"DD/MM/YYYY"},{title:"End Date",name:"endDate",type:"date",format:"DD/MM/YYYY"},{title:"",name:"seq",click:"seq",exp:function()
                     {
                       return "Plan Edit";

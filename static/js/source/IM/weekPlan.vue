@@ -24,44 +24,26 @@
                                 <tr v-for="item in weeks" >
                                     <td>{{item.title}}</td>
                                     <td>
-                                        <select  class="form-control"  v-model="plans[item.timestamp].am.projId" @change="switchProj(item.timestamp,'am')">
-                                            <option value="">Choose Project...</option>
+                                        <select  class="form-control"  v-model="plans[item.timestamp].am.taskId" @change="switchProj(item.timestamp,'am')">
+                                            <option value="">Choose TaskId...</option>
                                             <option v-for="proj in projs"  :value="proj._id">
-                                                {{ proj.name }}
-                                            </option>
-                                        </select>
-                                        <select  class="form-control"  v-model="plans[item.timestamp].am.milestone">
-                                            <option value="">Choose Milestone...</option>
-                                            <option v-for="milestone in milestoneMap[item.timestamp+'am']"  :value="milestone">
-                                                {{ milestone}}
+                                                {{ proj.taskId }}
                                             </option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select  class="form-control" @change="switchProj(item.timestamp,'pm')"   v-model="plans[item.timestamp].pm.projId">
-                                            <option value="">Choose Project...</option>
+                                        <select  class="form-control" @change="switchProj(item.timestamp,'pm')"   v-model="plans[item.timestamp].pm.taskId">
+                                            <option value="">Choose TaskId...</option>
                                             <option v-for="proj in projs"  :value="proj._id">
-                                                {{ proj.name }}
+                                                {{ proj.taskId}}
                                             </option>
                                          </select>
-                                        <select  class="form-control"  v-model="plans[item.timestamp].pm.milestone">
-                                            <option value="">Choose Milestone...</option>
-                                            <option v-for="milestone in milestoneMap[item.timestamp+'pm']"  :value="milestone">
-                                                {{ milestone}}
-                                            </option>
-                                        </select>
                                     </td>
                                     <td>
-                                        <select  class="form-control" @change="switchProj(item.timestamp,'ot')"  v-model="plans[item.timestamp].ot.projId">
-                                            <option value="">Choose Project...</option>
+                                        <select  class="form-control" @change="switchProj(item.timestamp,'ot')"  v-model="plans[item.timestamp].ot.taskId">
+                                            <option value="">Choose TaskId...</option>
                                             <option v-for="proj in projs"  :value="proj._id">
-                                                {{ proj.name }}
-                                            </option>
-                                        </select>
-                                        <select  class="form-control"  v-model="plans[item.timestamp].ot.milestone">
-                                            <option value="">Choose Milestone...</option>
-                                            <option v-for="milestone in milestoneMap[item.timestamp+'ot']"  :value="milestone">
-                                                {{ milestone}}
+                                                {{ proj.taskId }}
                                             </option>
                                         </select>
                                     </td>
@@ -92,11 +74,13 @@
             return {
                 monthWeek:{},
                 weeks:[],
-                milestoneMap:{},
+                //milestoneMap:{},
                 planList:[],
                 plans:{},
+                taskId:[],
+                taskIdMap:{},
                 projs:[],
-                projMap:{},
+                //projMap:{},
                 method:'new',
                 executing:false,
                 weekTitle:null,
@@ -108,8 +92,9 @@
             $.post("/im/getWeekPlan",{monthWeekId:this.$route.params.monthWeekId}).done((rs)=>{
                 _self.monthWeek = rs.monthWeek;
                 _self.projs = rs.projs;
+                _self.taskId=rs.taskId;
                 rs.projs.forEach((proj)=>{
-                    _self.projMap[proj._id]=proj;
+                    _self.taskIdMap[proj._id]=proj.taskId;
                 });
                 if (rs.plans)
                 {
@@ -121,7 +106,7 @@
                             _self.$set(_self.plans,plan.planDate,{});
                         }
                        // _self.$set(_self.plans,plan.planDate,plan);
-                        plan.projId = plan.projectId;
+                        plan.taskId = plan.taskId;
                        _self.plans[plan.planDate][plan.period]=plan;
                     });
                 }
@@ -149,9 +134,9 @@
                     };*/
                     this.fillPlan(t.unix());
 
-                    this.$set(this.milestoneMap ,t.unix()+"am",[]);
-                    this.$set(this.milestoneMap ,t.unix()+"pm",[]);
-                    this.$set(this.milestoneMap ,t.unix()+"ot",[]);
+                    //this.$set(this.milestoneMap ,t.unix()+"am",[]);
+                    //this.$set(this.milestoneMap ,t.unix()+"pm",[]);
+                    //this.$set(this.milestoneMap ,t.unix()+"ot",[]);
 
                     t.add(1,"days");
                 }
@@ -170,9 +155,8 @@
                 {
                     if (this.plans[time][period]==null || typeof(this.plans[time][period])=="undefined")
                     {
-                        this.plans[time][period] = {projId:"",milestone:""};
-                    }
-                });
+                        this.plans[time][period] = {taskId:""};
+                    }});
 
                /* console.log("finish")
 
@@ -182,10 +166,10 @@
                     ot:{projId:"",milestone:""}
                 };*/
             },
-            switchProj:function(time,period)
-            {
-               this.$set(this.milestoneMap ,time+period,this.projMap[this.plans[time][period].projId].planedMilestones);
-            },
+            // switchProj:function(time,period)
+            // {
+            //    this.$set(this.milestoneMap ,time+period,this.projMap[this.plans[time][period].projId].planedMilestones);
+            // },
             backList:function()
             {
                 this.$router.push({ name:'listWeekForPlan'})
