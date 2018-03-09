@@ -9,5 +9,13 @@ exports.db={
     db:"pmo",
     poolSize:20
 };
+/*exports.db={
+    server:"47.100.19.8",//47.89.43.215
+    port:27017,
+    user:"pmoadmin",
+    pwd:"yonyou2016",
+    db:"pmo",
+    poolSize:20
+};*/
 
 

@@ -4,10 +4,10 @@ var webpack = require('webpack')
 module.exports = {
   entry: './static/js/source/main.js',//main.js attendance.js
   output: {
-     path: './static/js/dist',
-      filename: "main.js"
-      //publicPath: '/js/dist/',
-      //chunkFilename: "[id].[name].[chunkHash].js"
+      path:path.resolve(__dirname,'./static/js/dist'),
+      filename: "main.js",
+      publicPath: '/js/dist/',
+      chunkFilename: "[id].[name].[chunkHash].js"
   },
   module: {
     rules: [

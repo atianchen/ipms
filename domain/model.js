@@ -328,6 +328,7 @@ class YearWeek
         return {
             year:{type:INT},
             month:{type:INT},
+            seq:{type:INT},
             startDate:{type:DATE,format:"DD/MM/YYYY"},
             endDate:{type:DATE,format:"DD/MM/YYYY"}
         };
@@ -526,3 +527,4 @@ exports.Accrualforecast = Accrualforecast;
 exports.WeekCashForecast = WeekCashForecast;
 exports.WeekAccrualForecast = WeekAccrualForecast;
 exports.WeekPlan = WeekPlan;
+exports.YearWeek = YearWeek;

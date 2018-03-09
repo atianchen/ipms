@@ -1,1 +1,1 @@
-webpack -w
+npm run client-pack
