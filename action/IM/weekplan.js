@@ -8,18 +8,17 @@ const moment = require('moment');
 const logger = require("../../util/logger").log;
 const appContext = require('../../ctx/appContext');
 const Constants = require('../../ctx/constants').Constants;
-const {MonthWeek,Project,WeekPlan} = require('../../domain/model');
+const {YearWeek,Project,WeekPlan} = require('../../domain/model');
 const projectStatus = require('../../db/constants').projectStatus;
 const {ObjectId} = require('mongodb');
 router.post("/listWeekForPlan",function(req,res){
     let page = wb.getPagination(req);
     let user = req.session[Constants.LOGIN_USER_KEY];
     let q = {
-        startDate: {$gte: parseInt(req.body.startDate)},
-        endDate: {$lte: parseInt(req.body.endDate)}
+        endDate: {$gte: parseInt(req.body.startDate)}
     }
-    page.sort={yearSeq:1};
-    orm.pagejoinquery(new MonthWeek(),null,q,page,function(err,rs)
+    page.sort={seq:1};
+    orm.pagejoinquery(new YearWeek(),null,q,page,function(err,rs)
     {
         let model = {};
         model.page = page;

@@ -36,7 +36,7 @@
                 q:{},
                 gridColumns: [{title:"Week",name:"title",exp:function(data)
                     {
-                        return moment(data.startDate*1000).format("YYYY")+"-WK"+(data.yearSeq+1);
+                        return moment(data.startDate*1000).format("YYYY")+"-WK"+(data.seq+1);
                     }},{title:"Start Date",name:"startDate",type:"date",format:"DD/MM/YYYY"},{title:"End Date",name:"endDate",type:"date",format:"DD/MM/YYYY"},{title:"",name:"seq",click:"seq",exp:function()
                     {
                       return "Plan Edit";
@@ -64,10 +64,10 @@
             pageSearch:function()
             {
                 let startDate = moment();
-                startDate.startOf('month');
-                let endDate = startDate.clone().add(3,"months");
+              /*  startDate.startOf('month');
+                let endDate = startDate.clone().add(3,"months");*/
                 let _self=this;
-                $.post("/im/listWeekForPlan",{startDate:startDate.unix(),endDate:endDate.unix()}).done((rs)=>{
+                $.post("/im/listWeekForPlan",{startDate:startDate.unix(),page:this.page}).done((rs)=>{
                     _self.gridData=rs.data;
                     _self.page=rs.page;
                 }).fail(function(){});
