@@ -58,7 +58,6 @@
             },
             pagination:function(page)
             {
-                console.log(page)
                 this.page.pn = page;
                 this.pageSearch();
             },
@@ -68,7 +67,7 @@
               /*  startDate.startOf('month');
                 let endDate = startDate.clone().add(3,"months");*/
                 let _self=this;
-                $.post("/im/listWeekForPlan",{startDate:startDate.unix()}).done((rs)=>{
+                $.post("/im/listWeekForPlan",{startDate:startDate.unix(),page:this.page}).done((rs)=>{
                     _self.gridData=rs.data;
                     _self.page=rs.page;
                 }).fail(function(){});
