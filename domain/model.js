@@ -491,9 +491,10 @@ class WeekPlan
     getFieldDefin()
     {
         return{
-            monthweekId:{type:REF,join:{col:'monthweek'},alias:"monthweek"},
+            yearweekId:{type:REF,join:{col:'yearWeek'},alias:"yearWeek"},
             personId:{type:REF,join:{col:'person'},alias:"person"},
             projectId:{type:REF,join:{col:'project'},alias:'proj'},
+            taskId:{type:STRING},
             year:{type:INT},
             month:{type:INT},
             day:{type:INT},
@@ -521,10 +522,10 @@ exports.AccessToken = AccessToken;
 exports.Division = Division;
 exports.MonthWeek = MonthWeek;
 exports.ProjectStatus = ProjectStatus;
-exports.CAInvoiceactual = CAInvoiceActual;
 exports.Cashinforecast = Cashinforecast;
 exports.Accrualforecast = Accrualforecast;
 exports.WeekCashForecast = WeekCashForecast;
 exports.WeekAccrualForecast = WeekAccrualForecast;
 exports.WeekPlan = WeekPlan;
 exports.YearWeek = YearWeek;
+exports.CAInvoiceActual = CAInvoiceActual;
