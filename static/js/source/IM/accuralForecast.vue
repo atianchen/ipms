@@ -4,7 +4,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Accuralforecast Edit<small>Edit the accuralforecast information</small></h2>
+                    <h2>PM Accural Forecast</h2>
                     <ul class="nav navbar-right panel_toolbox">
 
                     </ul>
@@ -16,20 +16,32 @@
                         <table class="table table-striped jambo_table bulk_action  table-bordered">
                             <tbody>
                             <tr>
-                                <td class="ld" nowrap>ContractId</td>
-                                <td>{{proj.contract.contractId}}</td>
+                                <td class="ld" nowrap>EntrySysDate</td>
+                                <td>{{accuralforecast.entrysysdate|formatDate}}</td>
                             </tr>
                             <tr>
                                 <td class="ld">ProjectId</td>
                                 <td>{{proj.projectId}}</td>
                             </tr>
                             <tr>
-                                <td class="ld">Currency</td>
-                                <td>{{proj.currency}}</td>
+                                <td class="ld">Customer</td>
+                                <td>{{proj.contract.customerName}}</td>
                             </tr>
                             <tr>
-                                <td class="ld">SalesMan</td>
-                                <td>{{proj.contract.salesMan}}</td>
+                                <td class="ld" nowrap>ContractId</td>
+                                <td>{{proj.contract.contractId}}</td>
+                            </tr>
+                            <tr>
+                                <td class="ld">Amount</td>
+                                <td>{{proj.contract.amt}}</td>
+                            </tr>
+                            <tr>
+                                <td class="ld">Currency</td>
+                                <td>{{proj.contract.currency}}</td>
+                            </tr>
+                            <tr>
+                                <td class="ld">CurrentMilestones</td>
+                                <td>{{accuralforecast.currentmilestone}}</td>
                             </tr>
                             <tr v-for="mw in mws">
                                 <td class="ld">{{getWkTitle(mw)}}</td>
@@ -66,18 +78,30 @@
                 executing:false
             }
         },
+        filters:{
+            formatDate:function(date)
+            {
+                return moment().format("YYYY-MM-DD");
+            }
+        },
         mounted:function(){
+            this.initSysDate();
             let startDate = moment();
-            startDate.startOf('month');
+           // let entrysysdate =moment();
+           // startDate.startOf('month');
             let endDate = startDate.clone().add(3,"months");
             let _self=this;
-            $.post("/im/getAccuralForecast",{projId:this.$route.params.projId,startDate:startDate.unix(),endDate:endDate.unix()}).done((rs)=>{
+            $.post("/im/getAccuralForecast",{projId:this.$route.params.projId,startDate:startDate.unix()}).done((rs)=>{
                 _self.proj = rs.proj;
                 _self.mws = rs.mws;
                 _self.accuralforecast = rs.accuralforecast;
             }).fail(function(){});
         },
         methods: {
+            initSysDate()
+            {
+                this.accuralforecast.entrysysdate= moment();
+            },
             getWkTitle(mw)
             {
                 return moment(mw.startDate*1000).format("MMMM")+"-WK"+(mw.seq+1);
@@ -88,6 +112,7 @@
             },
             saveAccuralinforecast:function()
             {
+
                 this.executing = true;
                 let _self = this;
                 $.post("/im/saveAccuralForecast",{accuralforecast:this.accuralforecast}).done((rs)=>{

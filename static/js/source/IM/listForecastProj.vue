@@ -3,7 +3,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Project <small>Choose Project for cash forecast</small></h2>
+                    <h2>Cash-in Forecast</h2>
                     <ul class="nav navbar-right panel_toolbox">
 
                     </ul>
@@ -14,7 +14,7 @@
                         <ul>
                             <li>
                                 <div class="input-group">
-                                    <input type="text" class="form-control  col-md-2" v-model="q.name" placeholder="Project Name">
+                                    <input type="text" class="form-control  col-md-2" v-model="q.contractId" placeholder="ontractId">
                                 </div>
                             </li>
                             <li>
@@ -45,7 +45,7 @@
         data () {
             return {
                 q:{},
-                gridColumns: [{title:"Project Name",name:"name",click:"_id"},{title:"Project Id",name:"projectId"},{title:"Project Type",name:"type"},{title:"Task Id",name:"taskId"},{title:"System Project Id",name:"sysProj"},{title:"ContractId",name:"contract.contractId"},
+                gridColumns: [{title:"ContractId",name:"contract.contractId",click:"_id"},{title:"Project Name",name:"name"},{title:"Project Id",name:"projectId"},{title:"Project Type",name:"type"},{title:"Task Id",name:"taskId"},{title:"System Project Id",name:"sysProj"},
                     {title:"Planned Milestone",name:"planedMilestones",join:"/"},{title:"Current Milestone",name:"currentMilestone"},{title:"PM",name:"pm.name"},{title:"Division",name:"division"},{title:"Create Date",name:"createDate",type:"date",format:"DD/MM/YYYY"}],
                 gridData:[],
                 page:{}

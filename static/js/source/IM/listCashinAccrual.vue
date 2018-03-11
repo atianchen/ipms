@@ -3,7 +3,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Contract<small>Select a contract</small></h2>
+                    <h2>Cash-in Accrual Actual Entry</h2>
                     <ul class="nav navbar-right panel_toolbox">
 
                     </ul>
@@ -25,9 +25,10 @@
                     <div class="table-responsive">
                         <hy-grid :columns="gridColumns" :data="gridData"  v-on:itemClick="itemClick"></hy-grid>
                     </div>
+
                 </div>
                 <div class="row">
-                    <hy-gridPaper :page="page"  v-on:paginationClick="pagination"></hy-gridPaper>
+                    <hy-gridPager :page="page"  v-on:paginationClick="pagination"></hy-gridPager>
                 </div>
             </div>
         </div>
@@ -42,35 +43,34 @@
 
     export default {
         data(){
-                return {
-                    q:{},
-                    gridColumns: [{title:"Project Name",name:"name",click:"_id"},{title:"Project Id",name:"projectId"},{title:"Project Type",name:"type"},{title:"Task Id",name:"taskId"},{title:"System Project Id",name:"sysProj"},{title:"ContractId",name:"contract.contractId"},
-                        {title:"Planned Milestone",name:"planedMilestones",join:"/"},{title:"Current Milestone",name:"currentMilestone"},{title:"PM",name:"pm.name"},{title:"Division",name:"division"},{title:"Create Date",name:"createDate",type:"date",format:"DD/MM/YYYY"}],
-                    gridData:[],
-                    page:{}
-                }
-            },
+            return {
+                q:{},
+                gridColumns: [{title:"ContractId",name:"contract.contractId",click:"_id"},{title:"Project Name",name:"name"},{title:"Project Id",name:"projectId"},{title:"Project Type",name:"type"},{title:"Task Id",name:"taskId"},{title:"System Project Id",name:"sysProj"},
+                    {title:"Planned Milestone",name:"planedMilestones",join:"/"},{title:"Current Milestone",name:"currentMilestone"},{title:"PM",name:"pm.name"},{title:"Division",name:"division"},{title:"Create Date",name:"createDate",type:"date",format:"DD/MM/YYYY"}],
+                gridData:[],
+                page:{}
+            }
+        },
         created:function(){
-                let _self=this;
-                this.pageSearch();
+            let _self=this;
+            this.pageSearch();
         },
         methods:{
             itemClick: function(param){
                 this.$router.push({name:'cashinaccrualactual', params: {projId:param}})
             },
             pagination: function(page){
-              this.page.pn=page;
-              this.pageSearch();
+                this.page.pn=page;
+                this.pageSearch();
             },
             pageSearch: function(){
                 let _self=this;
-                $.post("/im/listCashinAccrual", {q:util.qfilter(this.q), page:this.page}).done((rs)=>{_self.gridData=rs.data;_self.page=this.page}).fail(function(){})
-
-            },
-            components: {
-                'hy-grid': Grid,
-                'hy-gridPager': GridPager
+                $.post("/im/listCashinAccrual",{q:util.qfilter(this.q),page:this.page}).done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;}).fail(function(){})
             }
+            },
+        components: {
+            'hy-grid': Grid,
+            'hy-gridPager': GridPager
         }
     }
 </script>

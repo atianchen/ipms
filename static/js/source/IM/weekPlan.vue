@@ -24,7 +24,7 @@
                                 <tr v-for="item in weeks" >
                                     <td>{{item.title}}</td>
                                     <td>
-                                        <select  class="form-control"  v-model="plans[item.timestamp].am.taskId" @change="switchProj(item.timestamp,'am')">
+                                        <select  class="form-control"  v-model="plans[item.timestamp].am.projId" @change="switchProj(item.timestamp,'am')">
                                             <option value="">Choose TaskId...</option>
                                             <option v-for="proj in projs"  :value="proj._id">
                                                 {{ proj.taskId }}
@@ -32,7 +32,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <select  class="form-control" @change="switchProj(item.timestamp,'pm')"   v-model="plans[item.timestamp].pm.taskId">
+                                        <select  class="form-control" @change="switchProj(item.timestamp,'pm')"   v-model="plans[item.timestamp].pm.projId">
                                             <option value="">Choose TaskId...</option>
                                             <option v-for="proj in projs"  :value="proj._id">
                                                 {{ proj.taskId}}
@@ -40,7 +40,7 @@
                                          </select>
                                     </td>
                                     <td>
-                                        <select  class="form-control" @change="switchProj(item.timestamp,'ot')"  v-model="plans[item.timestamp].ot.taskId">
+                                        <select  class="form-control" @change="switchProj(item.timestamp,'ot')"  v-model="plans[item.timestamp].ot.projId">
                                             <option value="">Choose TaskId...</option>
                                             <option v-for="proj in projs"  :value="proj._id">
                                                 {{ proj.taskId }}
@@ -72,15 +72,14 @@
     export default {
         data () {
             return {
-                monthWeek:{},
+                yearWeek:{},
                 weeks:[],
-                //milestoneMap:{},
+                milestoneMap:{},
                 planList:[],
                 plans:{},
-                taskId:[],
                 taskIdMap:{},
                 projs:[],
-                //projMap:{},
+                projMap:{},
                 method:'new',
                 executing:false,
                 weekTitle:null,
@@ -89,12 +88,12 @@
         },
         mounted:function(){
             let _self = this;
-            $.post("/im/getWeekPlan",{monthWeekId:this.$route.params.monthWeekId}).done((rs)=>{
-                _self.monthWeek = rs.monthWeek;
+            $.post("/im/getWeekPlan",{yearWeekId:this.$route.params.yearWeekId}).done((rs)=>{
+
+                _self.yearWeek = rs.yearWeek;
                 _self.projs = rs.projs;
-                _self.taskId=rs.taskId;
                 rs.projs.forEach((proj)=>{
-                    _self.taskIdMap[proj._id]=proj.taskId;
+                    _self.projMap[proj._id]=proj;
                 });
                 if (rs.plans)
                 {
@@ -106,7 +105,7 @@
                             _self.$set(_self.plans,plan.planDate,{});
                         }
                        // _self.$set(_self.plans,plan.planDate,plan);
-                        plan.taskId = plan.taskId;
+                       // plan.taskId = plan.taskId;
                        _self.plans[plan.planDate][plan.period]=plan;
                     });
                 }
@@ -115,9 +114,9 @@
         },
         methods: {
             init:function(){
-                this.weekTitle =  moment(this.monthWeek.startDate*1000).format("MMMM")+"-WK"+(this.monthWeek.seq+1);
-                let t = moment(this.monthWeek.startDate*1000);
-                let endDate = moment(this.monthWeek.endDate*1000);
+                this.weekTitle =  moment(this.yearWeek.startDate*1000).format("MMMM")+"-WK"+(this.yearWeek.seq+1);
+                let t = moment(this.yearWeek.startDate*1000);
+                let endDate = moment(this.yearWeek.endDate*1000);
                 while (t.unix()<=endDate.unix())
                 {
                     this.weeks.push(
@@ -155,7 +154,7 @@
                 {
                     if (this.plans[time][period]==null || typeof(this.plans[time][period])=="undefined")
                     {
-                        this.plans[time][period] = {taskId:""};
+                        this.plans[time][period] = {};
                     }});
 
                /* console.log("finish")
@@ -166,10 +165,10 @@
                     ot:{projId:"",milestone:""}
                 };*/
             },
-            // switchProj:function(time,period)
-            // {
-            //    this.$set(this.milestoneMap ,time+period,this.projMap[this.plans[time][period].projId].planedMilestones);
-            // },
+            switchProj:function(time,period)
+             {
+               this.$set(this.milestoneMap ,time+period,this.projMap[this.plans[time][period].projId].planedMilestones);
+            },
             backList:function()
             {
                 this.$router.push({ name:'listWeekForPlan'})
@@ -177,7 +176,19 @@
             saveWeekPlan:function()
             {
                 let _self = this;
-                $.post("/im/saveWeekPlan",{plans:this.plans,monthweekId:this.monthWeek._id}).done((rs)=>{
+                for (let tk in this.plans)
+                {
+                    //console.log(tk)
+                    for (let pk in this.plans[tk])
+                    {
+                        if (this.plans[tk][pk].projId) {
+                            this.plans[tk][pk].taskId = this.projMap[this.plans[tk][pk].projId].taskId;
+                            //console.log(this.projMap[this.plans[tk][pk].projId].taskId)
+                        }
+                    }
+                }
+                console.log(this.plans)
+              $.post("/im/saveWeekPlan",{plans:this.plans,yearweekId:this.yearWeek._id}).done((rs)=>{
                     if (rs.err)
                     {
                         notify("Saved Unsuccessful:"+rs.err,"","failure");
@@ -196,5 +207,4 @@
 </script>
 <style scoped>
     td.ld{width:15%;text-align:right;}
-    select{width:40%;display:inline-block}
 </style>

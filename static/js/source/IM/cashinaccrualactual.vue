@@ -10,7 +10,7 @@
                 </div>
                 <div class="content">
                     <br/>
-                    <form name="cashinaccrualactualForm" id="cashinaccrualactualForm" class="form-horizontal form-label-left" @submit.prevent="saveCashinaccrualactual">
+                    <form name="cashinaccrualactualForm" id="cashinaccrualactualForm" class="form-horizontal form-label-left" @submit.prevent="saveCashinAccrualActual">
                         <table class="table table-striped jambo_table bulk_action  table-bordered">
                             <tbody>
                              <tr>
@@ -38,7 +38,7 @@
                                  <td class="ld" nowrap>Cash</td>
                                  <td>
                                  <div class="col-md-12 col-sm-12 col-xs-12">
-                                     <input type="text" class="col-md-12 col-xs-12 " v-model="CAInvoiceActual.cash" id="cash" name="cash">
+                                     <input type="text" class="col-md-12 col-xs-12 "  data-rule="number" v-model="CAInvoiceActual.cash" id="cash" name="cash">
                                  </div>
                                  </td>
                              </tr>
@@ -70,7 +70,7 @@
                                  <td class="ld" nowrap>Invoice Amount</td>
                                  <td>
                                      <div class="col-md-12 col-sm-12 col-xs-12">
-                                     <input type="text" class="col-md-12 col-xs-12" v-model="CAInvoiceActual.invoiceamount" name="InvoiceAmt">
+                                     <input type="text" class="col-md-12 col-xs-12" data-rule="number" v-model="CAInvoiceActual.invoiceamount" name="InvoiceAmt">
                                      </div>
                                  </td>
                              </tr>
@@ -88,7 +88,7 @@
                         <div class="form-group">
                             <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-3">
                                 <button type="button" class="btn" @click="backList">Back</button>
-                                <button typr="submit" v-show="method=='new'" class="btn btn-primary" :disabled="executing">Save</button>
+                                <button type="submit" class="btn btn-primary" :disabled="executing">Save</button>
                             </div>
                         </div>
                     </form>
@@ -119,21 +119,34 @@
             let _self=this;
             $.post("/im/getCashinAccrualActual",{projId:this.$route.params.projId}).done((rs)=>{
                 _self.proj = rs.proj;
-                _self.CAInvoiceActual = rs.CAInvoiceActual;
+                if (rs.CAInvoiceActual)
+                    _self.CAInvoiceActual = rs.CAInvoiceActual;
             }).fail(function(){});
         },
         methods: {
             backList: function(){
-
                 this.$router.push({name:'listCashinAccrual'})
-
             },
-            savecashinaccrualActual: function(){
-
-            },
-        }
-
-
+            saveCashinAccrualActual:function()
+            {
+                if (validateForm()) {
+                    this.executing = true;
+                    let _self = this;
+                    $.post("/im/saveCashinAccrualActual", {CAInvoiceActual: this.CAInvoiceActual}).done((rs) => {
+                        _self.CAInvoiceActual = rs.CAInvoiceActual;
+                        _self.executing = false;
+                        if (rs.err) {
+                            notify("Saved Unsuccessful:" + rs.err, "", "failure");
+                        }
+                        else {
+                            notify("Saved Successful", "", "Successfual");
+                        }
+                    }).fail(function (e) {
+                        _self.executing = false;
+                    })
+                }
+            }
+          }
     }
 </script>
 

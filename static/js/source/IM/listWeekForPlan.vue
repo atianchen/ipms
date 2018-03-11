@@ -73,7 +73,7 @@
                 }).fail(function(){});
             },
             itemClick: function (param,entity) {
-                this.$router.push({ name:'weekPlan', params: { monthWeekId: entity._id }})
+                this.$router.push({ name:'weekPlan', params: { yearWeekId: entity._id }})
             }
         },
         components: {
