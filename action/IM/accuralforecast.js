@@ -36,8 +36,8 @@ router.post("/getAccuralForecast",function(req,res){
             res.json({err:err});
         else {
             orm.find((new MonthWeek()).getCollection(), {
-                startDate: {$gte: parseInt(req.body.startDate)},
-                endDate: {$lte: parseInt(req.body.endDate)}
+                endDate: {$gte: parseInt(req.body.startDate)}
+               // endDate: {$lte: parseInt(req.body.startDate)}
             }, {yearSeq: 1}, (err, mws) => {
                 if (err)
                     res.json({err: err});

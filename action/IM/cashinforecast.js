@@ -18,9 +18,9 @@ router.post("/listForecastProj",function(req,res){
     let page = wb.getPagination(req);
     let user = req.session[Constants.LOGIN_USER_KEY];
     let q = {};//req.body.q||{};
-    if (wb.containsQueryParam(req,"q","name"))
+    if (wb.containsQueryParam(req,"q","contractId"))
     {
-        q["name"]= {$regex: req.body.q.name.trim(), $options:'i'};
+        q["contractId"]= {$regex: req.body.q.contractId.contractId.trim(), $options:'i'};
     }
     q["memberIds"]={$in:[ObjectId(user._id)]};
     q["status"]={ $ne : projectStatus.STATUS_END };
@@ -42,8 +42,7 @@ router.post("/getCashForecast",function(req,res){
             res.json({err:err});
         else {
             orm.find((new MonthWeek()).getCollection(), {
-                startDate: {$gte: parseInt(req.body.startDate)},
-                endDate: {$lte: parseInt(req.body.endDate)}
+                endDate: {$gte: parseInt(req.body.startDate)}
             }, {yearSeq: 1}, (err, mws) => {
                 if (err)
                     res.json({err: err});

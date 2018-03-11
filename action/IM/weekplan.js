@@ -28,7 +28,7 @@ router.post("/listWeekForPlan",function(req,res){
 });
 router.post("/getWeekPlan",function(req,res){
     let user = req.session[Constants.LOGIN_USER_KEY];
-    orm.get((new MonthWeek()).getCollection(),req.body.monthWeekId,function(err,rs)
+    orm.get((new YearWeek()).getCollection(),req.body.yearWeekId,function(err,rs)
     {
         orm.find((new Project()).getCollection(), {
             $or:[{memberIds:{$in:[ObjectId(user._id)]}},{pmId:ObjectId(user._id)}]
@@ -36,10 +36,10 @@ router.post("/getWeekPlan",function(req,res){
             {
                 orm.find((new WeekPlan()).getCollection(), {
                      personId:ObjectId(user._id),
-                    monthweekId:ObjectId(req.body.monthWeekId),
+                    yearweekId:ObjectId(req.body.yearWeekId),
                     }, null, (err, plans) =>
                     {
-                        res.json({monthWeek:rs,projs:projs,plans:plans});
+                        res.json({yearWeek:rs,projs:projs,plans:plans});
                     }
                 );
             }
@@ -66,6 +66,7 @@ router.post("/saveWeekPlan",function(req,res){
                 wp.monthweekId = ObjectId(monthweekId);
                 wp.projectId = ObjectId(plans[time][period].projId);
                 wp.personId = ObjectId(user._id);
+                wp.taskId = plans[time][period].taskId;
                 wp.milestone = plans[time][period].milestone;
                 wp.period = period;
                 wp.year = parseInt(planTime.format("YYYY"));
