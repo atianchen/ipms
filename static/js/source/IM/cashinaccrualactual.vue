@@ -54,7 +54,12 @@
                                  <td class="ld" nowrap>Completed Milestone</td>
                                  <td>
                                      <div class="col-md-12 col-sm-12 col-xs-12">
-                                         <input type="text" class="col-md-12 col-xs-12" v-model="CAInvoiceActual.completemilestone" name="milestone">
+                                         <select   placeholder="Choose Division" v-model="CAInvoiceActual.completemilestone" id="completemilestone" name="completemilestone" class="form-control"  >
+                                             <option value="">Choose..</option>
+                                             <option v-for="item in proj.planedMilestones"  :value="item">
+                                                 {{ item }}
+                                             </option>
+                                         </select>
                                      </div>
                                  </td>
                              </tr>
@@ -62,7 +67,7 @@
                                  <td class="ld" nowrap>Confirm Date</td>
                                  <td>
                                      <div class="col-md-12 col-sm-12 col-xs-12">
-                                         <input type="text" class="col-md-12 col-xs-12" v-model="CAInvoiceActual.confirmdate" name="confrimDate">
+                                         <input type="text" class="col-md-12 col-xs-12" v-model="CAInvoiceActual.confirmdate" name="confrimDate" id="confrimDate">
                                      </div>
                                  </td>
                              </tr>
@@ -110,13 +115,22 @@
         data(){
             return {
                 proj: {contract:{}},
-                CAInvoiceActual: {},
+                CAInvoiceActual: {completemilestone:""},
                 executing: false
             }
         },
 
         mounted:function(){
             let _self=this;
+            initForm();
+            bindCalendar( document.querySelector('#cashindate'),function(val)
+            {
+                _self.$set(_self.CAInvoiceActual,"cashindate",moment(val).format("DD/MM/YYYY"));
+            });
+            bindCalendar( document.querySelector('#confrimDate'),function(val)
+            {
+                _self.$set(_self.CAInvoiceActual,"confrimDate",moment(val).format("DD/MM/YYYY"));
+            });
             $.post("/im/getCashinAccrualActual",{projId:this.$route.params.projId}).done((rs)=>{
                 _self.proj = rs.proj;
                 if (rs.CAInvoiceActual)
