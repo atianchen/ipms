@@ -41,11 +41,15 @@
                             </tr>
                             <tr>
                                 <td class="ld">CurrentMilestones</td>
-                                <td>{{accuralforecast.currentmilestone}}</td>
+                                <td v-model="accuralforecast.currentMilestone">{{proj.currentMilestone}}</td>
                             </tr>
                             <tr v-for="mw in mws">
                                 <td class="ld">{{getWkTitle(mw)}}</td>
-                                <td><input type="text" data-rule="number"  class="form-control" v-model="accuralforecast[mw._id].accrual" /></td>
+                                <td> <select  placeholder="Choose Division" v-model="accuralforecast[mw._id].accrual" >
+                                            <option value="">Choose..</option>
+                                            <option v-for="item in proj.planedMilestones" :value="item">{{item}}</option>
+                                     </select>
+                               </td>
                             </tr>
                             </tbody>
                         </table>
