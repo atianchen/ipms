@@ -18,11 +18,12 @@ router.post("/listForecastProj",function(req,res){
     let page = wb.getPagination(req);
     let user = req.session[Constants.LOGIN_USER_KEY];
     let q = {};//req.body.q||{};
+
     if (wb.containsQueryParam(req,"q","contractId"))
     {
         q["contractId"]= {$regex: req.body.q.contractId.contractId.trim(), $options:'i'};
     }
-    q["memberIds"]={$in:[ObjectId(user._id)]};
+    //q["memberIds"]={$in:[ObjectId(user._id)]};
     q["status"]={ $ne : projectStatus.STATUS_END };
     orm.pagejoinquery(new Project(),["pmId","contractId"],q,page,function(err,rs)
     {
