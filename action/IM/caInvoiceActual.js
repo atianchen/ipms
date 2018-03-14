@@ -21,9 +21,11 @@ router.post("/listCashinAccrual",function(req,res){
     {
         q["contractId"]= {$regex: req.body.q.contractId.contractId.trim(), $options:'i'};
     }
-    q["memberIds"]={$in:[ObjectId(user._id)]};
+
+    //q["memberIds"]={$in:[ObjectId(user._id)]};
+    q["division"] = {$in:user.divisions};
     q["status"]={ $ne : projectStatus.STATUS_END };
-    orm.pagejoinquery(new Project(),["contractId"],q,page,function(err,rs){
+    orm.pagejoinquery(new Project(),["pmId","contractId"],q,page,function(err,rs){
         let model = {};
         model.page=page;
         model.data=rs;
