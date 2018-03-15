@@ -87,7 +87,10 @@
             let _self=this;
             $.post("/im/getCashForecast",{projId:this.$route.params.projId,startDate:startDate.unix()}).done((rs)=>{
                 _self.proj = rs.proj;
-                _self.mws = rs.mws;
+                if (rs.mws.length>15)
+                    _self.mws = rs.mws.slice(0,15);
+                else
+                 _self.mws = rs.mws;
                 _self.cashforecast = rs.cashforecast;
             }).fail(function(){});
         },
