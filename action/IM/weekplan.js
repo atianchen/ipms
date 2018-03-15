@@ -15,16 +15,24 @@ router.post("/listWeekForPlan",function(req,res){
     let page = wb.getPagination(req);
     let user = req.session[Constants.LOGIN_USER_KEY];
     let q = {
-        endDate: {$gte: parseInt(req.body.startDate)}
+        startDate: {$gte: parseInt(req.body.startDate)},
+        endDate: {$lt: parseInt(req.body.endDate)}
     }
-    page.sort={seq:1};
-    orm.pagejoinquery(new YearWeek(),null,q,page,function(err,rs)
+    //col,condition,sort,callback,connection
+    orm.find((new YearWeek()).getCollection(),q,{seq:1},(err,rs)=>
     {
         let model = {};
         model.page = page;
         model.data = rs;
         res.json(model);
     });
+ /*   orm.pagejoinquery(new YearWeek(),null,q,page,function(err,rs)
+    {
+        let model = {};
+        model.page = page;
+        model.data = rs;
+        res.json(model);
+    });*/
 });
 router.post("/getWeekPlan",function(req,res){
     let user = req.session[Constants.LOGIN_USER_KEY];
