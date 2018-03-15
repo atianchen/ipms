@@ -39,14 +39,13 @@
                         return moment(data.startDate*1000).format("YYYY")+"-WK"+(data.seq+1);
                     }},{title:"Start Date",name:"startDate",type:"date",format:"DD/MM/YYYY"},{title:"End Date",name:"endDate",type:"date",format:"DD/MM/YYYY"},{title:"",name:"seq",click:"seq",exp:function()
                     {
-                      return "Plan Edit";
+                        return "Plan Edit";
                     }}],
                 gridData:[],
                 page:{}
             }
         },
         created:function(){
-
         },
         mounted:function(){
             this.pageSearch();
@@ -54,7 +53,6 @@
         methods: {
             itemClick:function()
             {
-
             },
             pagination:function(page)
             {
@@ -63,11 +61,19 @@
             },
             pageSearch:function()
             {
-                let startDate = moment();
-              /*  startDate.startOf('month');
-                let endDate = startDate.clone().add(3,"months");*/
+                let wd = moment().day(1);
+                wd.set('hour', 0);
+                wd.set('minute', 0);
+                wd.set('second', 0);
+                wd.set('millisecond', 0);
+                let prevWeek = wd.clone().subtract(7, 'days');
+                let nextWeek = wd.clone().add(14, 'days');
+                console.log(prevWeek.format("YYYY-MM-DD"))
+                console.log(nextWeek.format("YYYY-MM-DD"))
+                /*  startDate.startOf('month');
+                  let endDate = startDate.clone().add(3,"months");*/
                 let _self=this;
-                $.post("/im/listWeekForPlan",{startDate:startDate.unix(),page:this.page}).done((rs)=>{
+                $.post("/im/listWeekForPlan",{startDate:prevWeek.unix(),endDate:nextWeek.unix(),page:this.page}).done((rs)=>{
                     _self.gridData=rs.data;
                     _self.page=rs.page;
                 }).fail(function(){});
