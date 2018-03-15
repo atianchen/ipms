@@ -45,7 +45,7 @@
                             </tr>
                             <tr v-for="mw in mws">
                                 <td class="ld">{{getWkTitle(mw)}}</td>
-                                <td> <select  placeholder="Choose Division" v-model="accuralforecast[mw._id].accrual" >
+                                <td> <select  placeholder="Choose Milestone" v-model="accuralforecast[mw._id].accrual" id="" class="form-control">
                                             <option value="">Choose..</option>
                                             <option v-for="item in proj.planedMilestones" :value="item">{{item}}</option>
                                      </select>
@@ -97,6 +97,9 @@
             let _self=this;
             $.post("/im/getAccuralForecast",{projId:this.$route.params.projId,startDate:startDate.unix()}).done((rs)=>{
                 _self.proj = rs.proj;
+                if(rs.mws.length>15)
+                    _self.mws = rs.mws.slice(0,15);
+                else
                 _self.mws = rs.mws;
                 _self.accuralforecast = rs.accuralforecast;
             }).fail(function(){});
