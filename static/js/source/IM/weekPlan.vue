@@ -21,10 +21,10 @@
                                     <td>PM</td>
                                     <td>OT</td>
                                 </tr>
-                                <tr v-for="item in weeks" >
+                                <tr v-for="(item,index) in weeks" >
                                     <td>{{item.title}}</td>
                                     <td>
-                                        <select  class="form-control"  v-model="plans[item.timestamp].am.projId" @change="switchProj(item.timestamp,'am')">
+                                        <select v-bind:disabled="canEdit(index,item)" class="form-control"  v-model="plans[item.timestamp].am.projId" @change="switchProj(item.timestamp,'am')">
                                             <option value="">Choose TaskId...</option>
                                             <option v-for="proj in projs"  :value="proj._id">
                                                 {{ proj.taskId }}
@@ -32,7 +32,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <select  class="form-control" @change="switchProj(item.timestamp,'pm')"   v-model="plans[item.timestamp].pm.projId">
+                                        <select v-bind:disabled="canEdit(index,item)" class="form-control" @change="switchProj(item.timestamp,'pm')"   v-model="plans[item.timestamp].pm.projId">
                                             <option value="">Choose TaskId...</option>
                                             <option v-for="proj in projs"  :value="proj._id">
                                                 {{ proj.taskId}}
@@ -40,7 +40,7 @@
                                          </select>
                                     </td>
                                     <td>
-                                        <select  class="form-control" @change="switchProj(item.timestamp,'ot')"  v-model="plans[item.timestamp].ot.projId">
+                                        <select v-bind:disabled="canEdit(index,item)"  class="form-control" @change="switchProj(item.timestamp,'ot')"  v-model="plans[item.timestamp].ot.projId">
                                             <option value="">Choose TaskId...</option>
                                             <option v-for="proj in projs"  :value="proj._id">
                                                 {{ proj.taskId }}
@@ -72,6 +72,7 @@
     export default {
         data () {
             return {
+                curTime:null,
                 yearWeek:{},
                 weeks:[],
                 milestoneMap:{},
@@ -87,6 +88,11 @@
             }
         },
         mounted:function(){
+            this.curTime = moment();
+            this.curTime.set('hour', 0);
+            this.curTime.set('minute', 0);
+            this.curTime.set('second', 0);
+            this.curTime.set('millisecond', 0);
             let _self = this;
             $.post("/im/getWeekPlan",{yearWeekId:this.$route.params.yearWeekId}).done((rs)=>{
 
@@ -113,6 +119,10 @@
             }).fail(function(){});
         },
         methods: {
+            canEdit:function(index,item)
+            {
+                return (moment(item.wt*1000).unix()<this.curTime.unix());
+            },
             init:function(){
                 this.weekTitle =  moment(this.yearWeek.startDate*1000).format("MMMM")+"-WK"+(this.yearWeek.seq+1);
                 let t = moment(this.yearWeek.startDate*1000);
