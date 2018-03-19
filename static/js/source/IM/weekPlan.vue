@@ -4,7 +4,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>{{yearWeek.year}}-WK{{yearWeek.seq+1}} Edit<small>Set the weekPlan</small></h2>
+                    <h2> {{getDate(yearWeek)}} WK{{yearWeek.seq+1}} Edit<small>Set the weekPlan</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
 
                     </ul>
@@ -119,6 +119,10 @@
             }).fail(function(){});
         },
         methods: {
+            getDate(yw)
+            {
+                return moment(yw.startDate*1000).format("DD/MM/YYYY")+" - "+ moment(yw.endDate*1000).format("DD/MM/YYYY");
+            },
             canEdit:function(index,item)
             {
                 return (moment(item.wt*1000).unix()<this.curTime.unix());
