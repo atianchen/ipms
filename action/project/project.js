@@ -62,6 +62,18 @@ router.post("/list",function(req,res)
             }
         },
         (cb)=>{
+        orm.find((new Project()).getCollection(),{},null,function(err,projects){
+           model.projects=projects;
+           cb(err);
+        });
+        },
+        (cb)=>{
+       orm.find((new Person()).getCollection(),{_id:{$in:model.projects.map((p)=> p.pmId)}},null,function(err,persons){
+            model.persons=persons;
+            cb(err);
+        });
+        },
+        (cb)=>{
             orm.pagejoinquery(new Project(),["pmId","contractId"],q,page,function(err,rs)
             {
                 model.page = page;

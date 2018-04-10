@@ -63,6 +63,7 @@ router.post("/list",function(req,res)
 {
     let page = wb.getPagination(req);
     let q = req.body.q||{};
+
     if (!req.body.createDate1 ||  req.body.createDate1.toString().length<1) {
         req.body.createDate1 = moment().subtract(3,"days");
     }
@@ -95,8 +96,14 @@ router.post("/list",function(req,res)
             model.createDate1=wb.formatDate(req.body.createDate1);
         if (req.body.createDate2)
             model.createDate2=wb.formatDate(req.body.createDate2);
-        res.json(model);
+        orm.find((new Person()).getCollection(),{},null,(err,persons)=>{
+            model.persons = persons;
+            res.json(model);
+        });
+
     });
+
+
 });
 router.post("/getPlanMilestones",(req,res)=>
 {
@@ -257,12 +264,19 @@ router.post("/get",function(req,res)
                         cb(err);
                     },connection)
                 },
-                (cb)=>{
-                orm.get((new Person()).getCollection(), model.data.personId.toString(),function(err,person) {
-                    if (person)
-                        model.user = person;
-                    cb(err);
-                },connection)}
+                // (cb)=>{
+                // orm.get((new Person().getCollection(),model.data.personId.toString(),function)
+                //
+                // }
+                (cb)=> {
+                    orm.find((new Person()).getCollection(), {}, null, function (err, persons) {
+                        if (persons)
+                            model.persons = persons;
+                        else{
+                            cb(err);
+                        }
+                    }, connection)
+                }
             ],function (err)
             {
                 try {

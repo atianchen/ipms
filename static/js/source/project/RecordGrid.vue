@@ -22,11 +22,20 @@
                                     <input type="text" class="date-picker form-control  col-md-2"  id="createDate2" v-model="createDate2" placeholder="CreateDate End">
                                 </div>
                             </li>
+
                             <li>
                                 <div class="input-group">
-                                    <input type="text" class="form-control  col-md-2" v-model="q.person" placeholder="User Id">
+
+                                    <select  v-model="q.person" id="q.person" name="q.person" class="form-control" placeholder="Choose user" >
+                                        <option value='' disabled selected>Choose User</option>
+                                        <option v-for="person in persons" :value="person.userId">
+                                            {{ person.userId}}
+                                        </option>
+                                    </select>
                                 </div>
                             </li>
+
+
                             <li>
                                 <button type="button" class="btn btn-default" @click="pageSearch">Search</button>
                             </li>
@@ -67,8 +76,9 @@ export default {
       gridColumns: [{title:"User ID",name:"person",click:"_id"},{title:"User Name",name:"personName",click:"_id"},{title:"Task Id",name:"taskId"},{title:"SysProj",name:"sysProj"},{title:"Addr",name:"addr"},{title:"Period",name:"period"}
                     ,{title:"Cash-In Amount",name:"cash"} ,{title:"Completed Milestone",name:"completedMilestone"},{title:"Desc",name:"desc"},{title:"StartTime",name:"createDate",type:"date",format:"DD/MM/YYYY H:mm"},{title:"EndTime",name:"modifiedDate",type:"date",format:"DD/MM/YYYY H:mm"}],
       gridData:[],
-      page:{}
-
+      page:{},
+      persons:[],
+      person:null
     }
   },
    mounted:function(){
@@ -85,7 +95,8 @@ export default {
   },
   created:function(){
         let _self=this;
-        $.post("/project/record/list").done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;_self.createDate1=rs.createDate1;_self.createDate2=rs.createDate2;});
+        //$.post("/project/record/get").done((rs)=>{_self.persons=rs.persons});
+        $.post("/project/record/list").done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;_self.persons=rs.persons;_self.createDate1=rs.createDate1;_self.createDate2=rs.createDate2;});
 
   },
   methods: {

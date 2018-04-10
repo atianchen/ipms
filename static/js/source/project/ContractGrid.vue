@@ -14,7 +14,12 @@
                         <ul>
                             <li>
                                 <div class="input-group">
-                                    <input type="text" class="form-control  col-md-2" v-model="q.contractId" placeholder="ContractId">
+                                    <select   placeholder="ContractId" v-model="q.contractId" id="q.contractId" name="q.contractId" class="form-control"  >
+                                        <option value="" disabled selected>Choose Contract</option>
+                                        <option v-for="item in contracts" :value="item.contractId">
+                                            {{ item.contractId }}
+                                        </option>
+                                    </select>
                                 </div>
                             </li>
                             <li>
@@ -29,7 +34,12 @@
                             </li>
                             <li>
                                 <div class="input-group">
-                                    <input type="text" class="form-control  col-md-2" v-model="q.customerName" placeholder="Customer Name">
+                                    <select   placeholder="Choose CustomerName" v-model="q.customerName" id="q.customerName" name="customerName" class="form-control"  >
+                                        <option value="" disabled selected>Choose Customer</option>
+                                        <option v-for="item in contracts" :value="item.customerName">
+                                            {{ item.customerName }}
+                                        </option>
+                                    </select>
                                 </div>
                             </li>
                             <li>
@@ -80,13 +90,14 @@ export default {
     createDate1:null,
     createDate2:null,
       q:{},
+      contracts:[],
       gridColumns: [{title:"Contract ID",name:"contractId",click:"_id"},{title:"Signed Year",name:"signedYear"},{title:"Salesman",name:"salesMan"},
                     {title:"Product line",name:"productLine"},{title:"Customer Name",name:"customerName"},{title:"Customer Abbr",name:"customerAbbr"},
                     {title:"Currency",name:"currency"},{title:"Contract Amt",name:"amt"},{title:"Imp%",name:"imp"},{title:"Cus%",name:"cus",exp:function(item){ if (item.imp && item.imp>0)return 100-item.imp;else return 100;}},{title:"Cash-In opening",name:"cashInOpen"}
                     ,{title:"Progress opening%",name:"processOpen"},{title:"Division",name:"division"},{title:"CreateDate",name:"createDate",type:"date",format:"DD/MM/YYYY"}],
       gridData:[],
-      page:{}
-
+      page:{},
+      contractId: null
     }
   },
    mounted:function(){
@@ -103,7 +114,7 @@ export default {
   },
   created:function(){
         let _self=this;
-        $.post("/project/contract/list").done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;_self.createDate1=rs.createDate1;_self.createDate2=rs.createDate2;});
+        $.post("/project/contract/list").done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;_self.createDate1=rs.createDate1;_self.createDate2=rs.createDate2;_self.contracts=rs.contracts});
 
   },
   methods: {
