@@ -68,11 +68,10 @@ router.post("/list",function(req,res)
             model.createDate1=wb.formatDate(req.body.createDate1);
         if (req.body.createDate2)
             model.createDate2=wb.formatDate(req.body.createDate2);
-        orm.find((new Contract()).getCollection(),{},null,(err,contracts)=>{
+        orm.find((new Contract()).getCollection(),{},{contractId:1},(err,contracts)=>{
             model.contracts = contracts;
             res.json(model);
         });
-
     });
 
 });
