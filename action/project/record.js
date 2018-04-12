@@ -10,6 +10,7 @@ const wb = require('../../util/webutils');
 const moment = require("moment");
 const timeutils = require('../../util/timeutils');
 const projectService = require('../../service/projectService');
+const Constants = require('../../ctx/constants').Constants;
 const appContext = require('../../ctx/appContext');
 const projectStatus = require('../../db/constants').projectStatus;
 const exporter = require("../../util/exporter");
@@ -61,6 +62,8 @@ router.post("/exportRecord",function(req,res)
 });
 router.post("/list",function(req,res)
 {
+    let user = req.session[Constants.LOGIN_USER_KEY];
+
     let page = wb.getPagination(req);
     let q = req.body.q||{};
 
@@ -89,20 +92,71 @@ router.post("/list",function(req,res)
     }
     page.sort = {createDate:-1};
     q.division = {$in:appContext.getLoginUser(req).divisions};
-    orm.pagingquery(new EntryRecord(),q,page,function(err,rs)
+    if(user.role !='PMO'){
+      q["person"] = user.userId;
+      orm.pagingquery(new EntryRecord(),q,page,function(err,rs){
+          let model = {page: page, data: rs};
+          if (req.body.createDate1)
+              model.createDate1 = wb.formatDate(req.body.createDate1);
+          console.log(model.createDate1);
+          if (req.body.createDate2)
+              model.createDate2 = wb.formatDate(req.body.createDate2);
+          console.log(model.createDate2);
+          async.waterfall([
+              (cb) => {
+                  orm.find((new Person()).getCollection(), {}, null, function (err, persons) {
+                      model.persons = persons;
+                      cb(err);
+                  });
+              }
+              ,
+          ], function (err, result) {
+              if (err)
+                  res.json({err: err});
+              else {
+                  res.json(model);
+
+              }
+          });
+      });
+
+    }
+     else
     {
-        let model = {page:page,data:rs};
-        if (req.body.createDate1)
-            model.createDate1=wb.formatDate(req.body.createDate1);
-        if (req.body.createDate2)
-            model.createDate2=wb.formatDate(req.body.createDate2);
-        orm.find((new Person()).getCollection(),{},null,(err,persons)=>{
-            model.persons = persons;
-            res.json(model);
+        orm.pagingquery(new EntryRecord(), q, page, function (err, rs) {
+            let model = {page: page, data: rs};
+            if (req.body.createDate1)
+                model.createDate1 = wb.formatDate(req.body.createDate1);
+            if (req.body.createDate2)
+                model.createDate2 = wb.formatDate(req.body.createDate2);
+            async.waterfall([
+                (cb) => {
+                    orm.find((new Person()).getCollection(), {}, null, function (err, persons) {
+                        model.persons = persons;
+                        cb(err);
+                    });
+                }
+                ,
+            ], function (err, result) {
+                if (err)
+                    res.json({err: err});
+                else {
+                    res.json(model);
+
+                }
+            });
+
+
+            // orm.find((new Person()).getCollection(),{},null,(err,persons)=>{
+            //     model.persons = persons;
+            //
+            // });
+            // orm.find((new Person()).getCollection(),{groupName:{$in:model.persons.map((p)=> p.groupName)}},null,(err,groupNames)=>{
+            //     model.groupNames = groupNames;
+            //     res.json(model);
+            // })
         });
-
-    });
-
+    }
 
 });
 router.post("/getPlanMilestones",(req,res)=>
