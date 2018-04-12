@@ -19,9 +19,9 @@
                             </li>
                             <li>
                                 <div class="input-group">
-                                    <select   placeholder="q.projectId" v-model="q.projectId" id="q.projectId" name="q.projectId" class="form-control"  >
-                                        <option value="" disabled selected>Choose Project</option>
-                                        <option v-for="item in projects"  :value="item.projectId">
+                                     <select  type="text" id="projectId" name="projectId" class="form-control" v-model="q.projectId" >
+                                        <option value="111" disabled selected >Choose ProjectId</option>
+                                        <option v-for="item in projects" :value="item.projectId">
                                             {{ item.projectId }}
                                         </option>
                                     </select>
@@ -34,10 +34,10 @@
                             </li>
                             <li>
                                 <div class="input-group">
-                                    <select   placeholder="Choose Person" v-model="q.pmId" id="q.pmId" name="q.pmId" class="form-control"  >
+                                    <select   placeholder="pm.name" v-model="q.pmId" id="q.pmId" name="q.pmId" class="form-control"  >
                                         <option value="" disabled selected>Choose PM</option>
-                                        <option v-for="item in persons"  :value="item.userId">
-                                            {{ item.userId}}
+                                        <option v-for="item in persons"  :value="item.userId ">
+                                            {{ item.userId }}
                                         </option>
                                     </select>
                                 </div>
@@ -70,51 +70,55 @@
 </template>
 
 <script>
-import Grid from '../ctrl/Grid.vue'
-import GridPager from '../ctrl/GridPager.vue'
-import ajaxDownload  from '../ctrl/ajaxDownload'
-import {util} from '../../dist/pageHelper.js'
+    import Grid from '../ctrl/Grid.vue'
+    import GridPager from '../ctrl/GridPager.vue'
+    import ajaxDownload  from '../ctrl/ajaxDownload'
+    import {util} from '../../dist/pageHelper.js'
+    export default {
+        data () {
+            return {
+                q:{},
+                gridColumns: [{title:"Project Name",name:"name",click:"_id"},{title:"Project Id",name:"projectId"},{title:"Project Type",name:"type"},{title:"Task Id",name:"taskId"},{title:"System Project Id",name:"sysProj"},{title:"ContractId",name:"contract.contractId"},
+                    {title:"Planned Milestone",name:"planedMilestones",join:"/"},{title:"Current Milestone",name:"currentMilestone"},{title:"PM",name:"pm.name"},{title:"Division",name:"division"},{title:"Create Date",name:"createDate",type:"date",format:"DD/MM/YYYY"}],
+                gridData:[],
+                page:{},
+                projects:[],
+                contracts:[],
+                projectId: "Choose Project",
+                persons:[]
+            }
+        },
 
-export default {
-  data () {
-    return {
-      q:{},
-      gridColumns: [{title:"Project Name",name:"name",click:"_id"},{title:"Project Id",name:"projectId"},{title:"Project Type",name:"type"},{title:"Task Id",name:"taskId"},{title:"System Project Id",name:"sysProj"},{title:"ContractId",name:"contract.contractId"},
-        {title:"Planned Milestone",name:"planedMilestones",join:"/"},{title:"Current Milestone",name:"currentMilestone"},{title:"PM",name:"pm.name"},{title:"Division",name:"division"},{title:"Create Date",name:"createDate",type:"date",format:"DD/MM/YYYY"}],
-      gridData:[],
-      page:{},
-      projects:[],
-      persons:[]
-
-    }
-  },
-  created:function(){
-        let _self=this;
-        $.post("/project/project/list").done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;_self.projects=rs.projects;_self.persons=rs.persons}).fail(function(){})
-  },
-  methods: {
-        createProj:function(ev){this.$router.push("/project/projectAdd");},
-        itemClick: function (param) {
-            this.$router.push({ name:'projectEdit', params: { projId: param }})
-         },
-         pagination:function(page)
-         {
-             this.page.pn = page;
-            this.pageSearch();
-         },
-         pageSearch:function()
-         {
+        created:function(){
             let _self=this;
-            $.post("/project/project/list",{q:util.qfilter(this.q),page:this.page}).done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;}).fail(function(){})
-         },
-        exportXls:function()
-        {
-            ajaxDownload('/project/project/exportProj', util.qfilter(this.q), 'q');
+            $.post("/project/project/list").done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;_self.projects=rs.projects;_self.persons=rs.persons;}).fail(function(){})
+        },
+        methods: {
+            createProj:function(ev){this.$router.push("/project/projectAdd");},
+            itemClick: function (param) {
+                this.$router.push({ name:'projectEdit', params: { projId: param }})
+            },
+            pagination:function(page)
+            {
+                this.page.pn = page;
+                this.pageSearch();
+            },
+            pageSearch:function()
+            {
+                let _self=this;
+                $.post("/project/project/list",{q:util.qfilter(this.q),page:this.page}).done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;}).fail(function(){})
+            },
+            exportXls:function()
+            {
+                ajaxDownload('/project/project/exportProj', util.qfilter(this.q), 'q');
+            },
+            // 排序
+
+             //排序
+        },
+        components: {
+            'hy-grid': Grid,
+            'hy-gridPager': GridPager
         }
-    },
-    components: {
-     'hy-grid': Grid,
-     'hy-gridPager': GridPager
-  }
-}
+    }
 </script>
