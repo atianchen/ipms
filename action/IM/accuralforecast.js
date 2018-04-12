@@ -17,15 +17,28 @@ const {ObjectId} = require('mongodb');
 router.post("/listPmForecastProject",function(req,res){
     let page = wb.getPagination(req);
     let user = req.session[Constants.LOGIN_USER_KEY];
-    let q = {pmId:ObjectId(user._id)};//req.body.q||{};
-    q["status"]={ $ne : projectStatus.STATUS_END };
-    orm.pagejoinquery(new Project(),["pmId","contractId"],q,page,function(err,rs)
+    console.log(user);
+    if(user.role=='PMO' || user.role=='SysAdm')
+    {
+        let q={};
+        q["status"]={ $ne: projectStatus.STATUS_END};
+        orm.pagejoinquery(new Project(),null,q,page,function(err,rs){
+            let model ={};
+            model.page =page;
+            model.data =rs;
+            res.json(model);
+        })
+    }
+    else{
+    let q1 = {pmId:ObjectId(user._id)};//req.body.q1||{};
+    q1["status"]={ $ne : projectStatus.STATUS_END };
+        orm.pagejoinquery(new Project(),["pmId","contractId"],q1,page,function(err,rs)
     {
         let model = {};
         model.page = page;
         model.data = rs;
         res.json(model);
-    });
+    });}
 });
 
 router.post("/getAccuralForecast",function(req,res){
