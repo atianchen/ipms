@@ -78,8 +78,12 @@
         data () {
             return {
                 q:{},
-                gridColumns: [{title:"Project Name",name:"name",click:"_id"},{title:"Project Id",name:"projectId"},{title:"Project Type",name:"type"},{title:"Task Id",name:"taskId"},{title:"System Project Id",name:"sysProj"},{title:"ContractId",name:"contract.contractId"},
-                    {title:"Planned Milestone",name:"planedMilestones",join:"/"},{title:"Current Milestone",name:"currentMilestone"},{title:"PM",name:"pm.name"},{title:"Division",name:"division"},{title:"Create Date",name:"createDate",type:"date",format:"DD/MM/YYYY"}],
+                gridColumns: [{title:"Project Name",name:"name",click:"_id"},{title:"Project Id",name:"projectId"},{title:"Project Type",name:"type"},
+                    {title:"Project Scope",name:"projModules"},{title:"Project Amount",name:"projAmt"},{title:"Imp Manday",name:"impMandya"},{title:"Cus Manday",name:"cusManday"},
+                    {title:"Task Id",name:"taskId"},{title:"System Project Id",name:"sysProj"},{title:"ContractId",name:"contract.contractId"},
+                    {title:"Acclumated Accrual",name:"accComAccrual"}, {title:"Accrual of Year Begining",name:"yearStartAccrual"}, {title:"Accumlated Accrual of Current Year",name:"currentYearAccAccrual"},
+                    {title:"Planned Milestone",name:"planedMilestones",join:"/"},{title:"Current Milestone",name:"currentMilestone"},{title:"Diff Manday Between YearStart and Milestone",name:"yearDiffManday"},
+                    {title:"PM",name:"pm.name"},{title:"Division",name:"division"},{title:"Create Date",name:"createDate",type:"date",format:"DD/MM/YYYY"}],
                 gridData:[],
                 page:{},
                 projects:[],

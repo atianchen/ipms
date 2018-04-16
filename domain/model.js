@@ -89,11 +89,17 @@ class  Contract extends Entity
             signedYear:{type:INT,len:200},
             salesMan:{type:STRING},
             division:{type:STRING},
+            contractModule:{type:STRING},   //合同模块
             productLine:{type:STRING,len:200},
             customerName:{type:STRING,len:200},
             customerAbbr:{type:STRING,len:200},
             currency:{type:STRING},
+            salesman:{type:REF,join:{col:'person'},alias:"salesman"}, //业务员
+            mandays:{type:DOUBLE},   //人天
             amt:{type:DOUBLE},
+            accReceiptAmt:{type:DOUBLE},  //累计收款金额
+            yearStartAmt:{type:DOUBLE},   //年初收款金额
+            yearAccReceiptAmt:{type:DOUBLE},  //当年累计收款金额
             imp:{type:DOUBLE},
             cus:{type:DOUBLE},
             cashIn:{type:DOUBLE,len:200},
@@ -151,10 +157,20 @@ class Project extends Entity
             name:{type:STRING},
             projectId:{type:STRING},
             type:{type:STRING},
+            projectModules:{type:STRING},//项目范围
             sysProj:{type:STRING},
+            projAmt:{type:DOUBLE},//项目金额
             taskId:{type:STRING},
             progress:{type:DOUBLE},
             division:{type:STRING},
+            impManday:{type:DOUBLE}, //实施人天
+            cusManday:{type:DOUBLE}, //开发人天
+            impP:{type:DOUBLE},//实施占比
+            cusP:{type:DOUBLE}, //开发占比
+            accComAccrual:{type:DOUBLE},//累计完成权责比例
+            yearStartAccrual:{type:DOUBLE},// 年初权责完成比例
+            currentYearAccAccrual:{type:DOUBLE},// 当年累计权责完成比例
+            yearDiffManday:{type:DOUBLE},//年初实际进度与里程碑进度差异人天数
             currentMilestone:{type:STRING},
             planedMilestones:{type:ARRAY},
             completedMilestone:{type:STRING},
@@ -171,6 +187,17 @@ class Project extends Entity
         };
     }
     getCollection(){return "project"}
+}
+class ProjectStatus extends Entity
+{
+    getFieldDefin()
+    {
+        return {
+            status:{type:STRING},
+            abbr:{type:STRING}
+        };
+    }
+    getCollection(){return "projectstatus"}
 }
 class Menu extends Entity
 {
@@ -422,16 +449,6 @@ class YearAccrualForecast
         }
     };
     getCollection(){return "yearaccrualforecast"}
-}
-class ProjectStatus{
-    getFieldDefin() {
-        return {
-            projectstatus: {type: STRING},
-            abbr: {type: STRING}
-        };
-        }
-        getCollection(){return "projectstatus"}
-
 }
 
 class CAInvoiceActual{

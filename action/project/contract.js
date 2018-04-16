@@ -8,7 +8,7 @@ const orm = require('../../db/orm');
 const wb = require('../../util/webutils');
 const moment = require("moment");
 const appContext = require('../../ctx/appContext');
-const {Contract,Currency,Division} = require('../../domain/model');
+const {Contract,Currency,Division,Person} = require('../../domain/model');
 /**
  * contact list
  */
@@ -81,7 +81,7 @@ router.post("/list",function(req,res)
  */
 router.post("/get",function(req,res)
 {
-   let model = {};
+    let model = {};
     orm.find("currency",{},{createDate:1},function(err,rs)
     {
         if (err)
@@ -89,26 +89,30 @@ router.post("/get",function(req,res)
             res.json({err: err});
         }
         else {
-            orm.find((new Division()).getCollection(),{},{code:1},function(err,divisions)
-            {
-               if (err)
-                   res.json({err:err});
-               else
-               {
-                   model.currency = rs;
-                   model.divisions = divisions;
-                   if (req.body && req.body.id) {
-                       orm.get((new Contract()).getCollection(), req.body.id, function (err, rs) {
-                           model.data = rs;
-                           res.json(model);
-                       });
-                   }
-                   else {
-                       res.json(model);
-                   }
-               }
-            });
-
+            orm.find((new Person()).getCollection(),{},{name:1},function(err,persons) {
+                    if(err)
+                       res.json({err:err});
+                    else {
+                        orm.find((new Division()).getCollection(), {}, {code: 1}, function (err, divisions) {
+                            if (err)
+                                res.json({err: err});
+                            else {
+                                model.currency = rs;
+                                model.persons=persons;
+                                model.divisions = divisions;
+                                if (req.body && req.body.id) {
+                                    orm.get((new Contract()).getCollection(), req.body.id, function (err, rs) {
+                                        model.data = rs;
+                                        res.json(model);
+                                    });
+                                }
+                                else {
+                                    res.json(model);
+                                }
+                            }
+                        });
+                    }
+                });
         }
     });
 

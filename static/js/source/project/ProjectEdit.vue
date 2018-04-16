@@ -12,7 +12,7 @@
                 </div>
                 <div class="x_content">
                     <br />
-                    <form  name="projForm" id="projForm"  class="form-horizontal form-label-left"   @submit.prevent="saveProj">
+                    <form  name="projForm" id="projForm" class="form-horizontal form-label-left"   @submit.prevent="saveProj">
                         <div class="row">
                             <div class="form-group col-md-6 col-sm-6">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="contractId">Contract<span class="required">*</span>
@@ -59,6 +59,43 @@
                         </div>
 
                         <div class="row">
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="module">Project Scope
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="proj.projModules" id="module" name="module" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="projamt">Project Amount
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="proj.projAmt" id="projamt" name="projamt" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="impM">Imp Manday
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="proj.impManday" id="impM" name="impM" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cusM">Cus Manday
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="proj.cusManday" id="cusM" name="cusM" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
                         <div class="form-group col-md-6 col-sm-6">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" >Planned Milestone<span class="required">*</span>
                             </label>
@@ -87,7 +124,6 @@
                                     </div>
                                 </div>
                             </div>
-
                     </div>
 
                     <div class="row">
@@ -143,6 +179,45 @@
                                 </div>
                             </div>
                          </div>
+
+
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="accComAccrual">Acclumated Accrual
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="proj.accComAccrual" id="accComAccrual" name="accComAccrual" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="yearStartAccrual">Accrual of Year Begining
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="proj.yearStartAccrual" id="yearStartAccrual" name="yearStartAccrual" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="currentYearAccAccrual">Accumlated Accrual of Current Year
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="proj.currentYearAccAccrual" id="currentYearAccAccrual" name="currentYearAccAccrual" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="yearDiffManday">Diff Manday Between YearStart and Milestone
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="proj.yearDiffManday" id="yearDiffManday" name="yearDiffManday" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+
 
                         <div class="row" v-if="proj && proj._id">
                             <div class="form-group col-md-6 col-sm-6 ">

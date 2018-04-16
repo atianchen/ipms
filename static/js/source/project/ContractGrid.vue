@@ -91,9 +91,9 @@ export default {
     createDate2:null,
       q:{},
       contracts:[],
-      gridColumns: [{title:"Contract ID",name:"contractId",click:"_id"},{title:"Signed Year",name:"signedYear"},{title:"Salesman",name:"salesMan"},
-                    {title:"Product line",name:"productLine"},{title:"Customer Name",name:"customerName"},{title:"Customer Abbr",name:"customerAbbr"},
-                    {title:"Currency",name:"currency"},{title:"Contract Amt",name:"amt"},{title:"Imp%",name:"imp"},{title:"Cus%",name:"cus",exp:function(item){ if (item.imp && item.imp>0)return 100-item.imp;else return 100;}},{title:"Cash-In opening",name:"cashInOpen"}
+      gridColumns: [{title:"Contract ID",name:"contractId",click:"_id"},{title:"Signed Year",name:"signedYear"},{title:"Salesman",name:"salesMan"},{title:"Sales",name:"salesman"},
+          {title:"Contract Module",name:"contractModule"}, {title:"Product line",name:"productLine"},{title:"Customer Name",name:"customerName"},{title:"Customer Abbr",name:"customerAbbr"},
+                    {title:"Currency",name:"currency"},{title:"Contract Amt",name:"amt"},{title:"Accumlated Amt",name:"accReceiptAmt"},{title:"Amt of Begining Year",name:"yearStartAmt"},{title:"Accumlated Amt of Current Year",name:"yearAccReceiptAmt"},{title:"Contract Manday",name:"manday"},{title:"Imp%",name:"imp"},{title:"Cus%",name:"cus",exp:function(item){ if (item.imp && item.imp>0)return 100-item.imp;else return 100;}},{title:"Cash-In opening",name:"cashInOpen"}
                     ,{title:"Progress opening%",name:"processOpen"},{title:"Division",name:"division"},{title:"CreateDate",name:"createDate",type:"date",format:"DD/MM/YYYY"}],
       gridData:[],
       page:{},

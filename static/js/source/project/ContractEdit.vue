@@ -53,6 +53,30 @@
                             </div>
                       </div>
 
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="sales">Salesman
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+
+                                    <select   placeholder="Choose S" v-model="contract.salesman" id="sales" name="sales" class="form-control"  >
+                                        <option value="">Choose..</option>
+                                        <option v-for="item in persons"  :value="item.name">
+                                            {{ item.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="module">Contract Module
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="contract.contractModule" id="module" name="module" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
                       <div class="row">
                             <div class="form-group col-md-6 col-sm-6">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="productLine">ProductLine<span class="required">*</span>
@@ -110,6 +134,41 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="accReceiptAmt">Accumlated Amt
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="contract.accReceiptAmt" id="accReceiptAmt" name="accReceiptAmt" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="yearStartAmt">Amt of Begining Year
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="contract.yearStartAmt" id="yearStartAmt" name="yearStartAmt" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="yearAccReceiptAmt">Accumlated Amt of Current Year
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="contract.yearAccReceiptAmt" id="yearAccReceiptAmt" name="yearAccReceiptAmt" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mandays">Contract Manday
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" v-model="contract.mandays" id="mandays" name="mandays" class="form-control">
+                                </div>
+                            </div>
+                        </div>
 
 
                         <div class="row">
@@ -157,7 +216,8 @@ export default {
         currency:[],
         contract:{},
         method:"new",
-        divisions:[]
+        divisions:[],
+        persons:[]
     }
   },
   created:function(){
@@ -170,6 +230,7 @@ export default {
             if (rs.data)
              _self.contract=rs.data;
             _self.currency = rs.currency;
+            _self.persons=rs.persons;
             _self.divisions = rs.divisions;
            }).fail(function(){});
   },
