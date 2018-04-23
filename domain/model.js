@@ -469,6 +469,42 @@ class CAInvoiceActual{
     }
     getCollection(){return "cainvoiceactual"}
 }
+
+class CashinActual{
+    getFieldDefin(){
+        return{
+            contractId:{type:REF,join:{col:'contract'},alias:'contractId'},
+            customer: {type:STRING},
+            projectId:{type:REF, join:{col:'project'},alias:'projectId'},
+            amount:{type:STRING},
+            currency:{type:STRING},
+            cash:{type:DOUBLE},
+            cashindate:{type:Date},
+            entrydate:{type:Date}
+        };
+
+    }
+    getCollection(){return "cashinactual"}
+}
+
+class AccrualActual{
+    getFieldDefin(){
+        return{
+            contractId:{type:REF,join:{col:'contract'},alias:'contractId'},
+            customer: {type:STRING},
+            projectId:{type:REF, join:{col:'project'},alias:'ProjectId'},
+            amount:{type:STRING},
+            currency:{type:STRING},
+            completemilestone:{type:REF,join:{col:'milestone'},alias:'milestone'},
+            confirmdate:{type:DATE},
+            entryDate:{type:Date}
+        };
+
+    }
+    getCollection(){return "accrualactual"}
+}
+
+
 class Cashinforecast{
     getFieldDefin(){
         return{
@@ -546,3 +582,5 @@ exports.WeekAccrualForecast = WeekAccrualForecast;
 exports.WeekPlan = WeekPlan;
 exports.YearWeek = YearWeek;
 exports.CAInvoiceActual = CAInvoiceActual;
+exports.CashinActual  = CashinActual;
+exports.AccrualActual = AccrualActual;
