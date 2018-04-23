@@ -35,14 +35,21 @@ const routes=[
     { path: '/setting/divisionAdd',name:'divisionAdd', component:  resolve=>require(["./setting/DivisionEdit.vue"],resolve) },
     { path: '/setting/divisionAdd/:divisionId',name:'divisionEdit', component:  resolve=>require(["./setting/DivisionEdit.vue"],resolve) },
 
+    { path: '/project/projectstatusList',name:'projectstatusList', component: resolve=>require(["./project/ProjectStatusGrid.vue"],resolve)},
+    { path: '/project/projectstatusAdd',name:'projectstatusAdd', component: resolve=>require(["./project/ProjectStatusEdit.vue"],resolve)},
+    { path: '/project/projectstatusEdit/:projectstatusId',name:'projectstatusEdit', component: resolve=>require(["./project/ProjectStatusEdit.vue"],resolve)},
+
     { path: '/setting/milestoneSet',name:'milestoneSet', component:  resolve=>require(["./setting/MilestoneSet.vue"],resolve) },
     { path:'/setting/milestoneTypeSet',name:'milestoneTypeSet', component:  resolve=>require(["./setting/MilestoneTypeSet.vue"],resolve) },
+
     { path: '/project/personList',name:'personList', component:  resolve=>require(["./user/PersonGrid.vue"],resolve) },
     { path: '/project/personAdd',name:'personAdd', component:  resolve=>require(["./user/PersonEdit.vue"],resolve) },
     { path: '/project/personEdit/:personId',name:'personEdit', component:  resolve=>require(["./user/PersonEdit.vue"],resolve) },
+
     { path: '/project/contractList',name:'contractList', component:  resolve=>require(["./project/ContractGrid.vue"],resolve) },
     { path: '/project/contractAdd',name:'contractAdd', component:  resolve=>require(["./project/ContractEdit.vue"],resolve) },
     { path: '/project/contractEdit/:contractId',name:'contractEdit', component:  resolve=>require(["./project/ContractEdit.vue"],resolve) },
+
     { path: '/project/projectList',name:'projectList', component:  resolve=>require(["./project/ProjectGrid.vue"],resolve) },
     { path: '/project/projectAdd',name:'projectAdd', component:  resolve=>require(["./project/ProjectEdit.vue"],resolve) },
     { path: '/project/projectEdit/:projId',name:'projectEdit', component:  resolve=>require(["./project/ProjectEdit.vue"],resolve) },
@@ -60,7 +67,12 @@ const routes=[
     { path: '/im/listWeekForPlan',name:'listWeekForPlan', component:  resolve=>require(["./IM/listWeekForPlan.vue"],resolve) },
     { path: '/im/weekPlan/:monthWeekId',name:'weekPlan', component:  resolve=>require(["./IM/weekPlan.vue"],resolve) },
     { path: '/im/listCashinAccrual',name:'listCashinAccrual', component: resolve=> require(["./IM/listCashinAccrual.vue"],resolve)},
-    { path: '/im/cashinaccrualactual/:projId',name: 'cashinaccrualactual', component: resolve=> require(["./IM/cashinaccrualactual.vue"],resolve)}
+    { path: '/im/cashinaccrualactual/:projId',name: 'cashinaccrualactual', component: resolve=> require(["./IM/cashinaccrualactual.vue"],resolve)},
+    { path: '/im/listCashinActual',name:'listCashinActual', component: resolve=>require(["./IM/listCashinActual.vue"],resolve)},
+    { path: '/im/cashinActual/:projId',name:'cashinactual',component: resolve=>require(["./IM/cashinActual.vue"],resolve)},
+    { path: '/im/listAccrualActual',name: 'listAccrualActual',component: resolve=>require(["./IM/listAccrualActual.vue"],resolve)},
+    { path: '/im/accrualactual/:projId',name: 'accrualactual',component: resolve=>require(["./IM/accrualActual.vue"],resolve)}
+
 ];
 export default new VueRouter({
     routes: routes
