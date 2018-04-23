@@ -48,6 +48,7 @@ app.use(function (req, res, next) {
 app.set("view engine","ejs");
 
 app.use('/', require('./action/index'));
+app.use('/project/projectstatus', require('./action/project/projectstatus'));
 app.use('/project/person', require('./action/project/person'));
 app.use('/project/contract', require('./action/project/contract'));
 app.use('/project/project',require('./action/project/project'));
@@ -72,6 +73,9 @@ app.use('/im',require('./action/IM/cashinforecast'));
 app.use('/im',require('./action/IM/accuralforecast'));
 app.use('/im',require('./action/IM/weekplan'));
 app.use('/im',require('./action/IM/caInvoiceActual'));
+app.use('/im',require('./action/IM/cashinactual'));
+app.use('/im',require('./action/IM/accrualActual'));
+
 const server = app.listen(3000, function () {
     let host = server.address().address;
     let port = server.address().port;
