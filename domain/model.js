@@ -461,7 +461,7 @@ class CAInvoiceActual{
             currency:{type:STRING},
             cash:{type:DOUBLE},
             cashindate:{type:DATE},
-            completemilestone:{type:REF,join:{col:'milestone'},alias:'milestone'},
+            completemilestone:{type:String},
             confirmdate:{type:DATE},
             invoiceamount:{type:DOUBLE},
             invoicedate:{type:DATE}
@@ -490,14 +490,14 @@ class CashinActual{
 class AccrualActual{
     getFieldDefin(){
         return{
-            contractId:{type:REF,join:{col:'contract'},alias:'contractId'},
-            customer: {type:STRING},
+           // contractId:{type:REF,join:{col:'contract'},alias:'contractId'},
+           // customer: {type:STRING},
             projectId:{type:REF, join:{col:'project'},alias:'ProjectId'},
-            amount:{type:STRING},
-            currency:{type:STRING},
+            accComAccrual:{type:DOUBLE},
             completemilestone:{type:REF,join:{col:'milestone'},alias:'milestone'},
+            accrual:{type:DOUBLE},
             confirmdate:{type:DATE},
-            entryDate:{type:Date}
+            entryDate:{type:DATE}
         };
 
     }
