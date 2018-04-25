@@ -55,6 +55,12 @@
             }
         },
         created:function(){
+            let param =null;
+            if (this.$route.params && this.$route.params.projectstatusId)
+            {
+                this.method="update";
+                param = {id:this.$route.params.projectstatusId};
+            }
             if(this.$route.params && this.$route.params.projectstatusId)
             {
                 var _self= this;
@@ -80,7 +86,7 @@
                 if(validateForm){
                     console.log(this.projectstatus);
                     let _self =this;
-                    if(this.method="new")
+                    if(this.method=="new")
                         $.post("/project/projectstatus/save",{projectstatus:this.projectstatus}).done((rs)=>{_self.method="update"; notify("Saved successfully","","success");}).fail(function(){})
                     else
                         $.post("/project/projectstatus/update",{projectstatus:this.projectstatus}).done((rs)=>{ notify("Updated successfully","","success");}).fail(function(){})
