@@ -13,24 +13,28 @@
                         <table class="table table-striped jambo_table bulk_action  table-bordered">
                             <tbody >
                             <tr>
-                                <td class="ld" nowrap>ContractId</td>
-                                <td>{{proj.contract.contractId}}</td>
-                            </tr>
-                            <tr>
-                                <td class="ld" nowrap>Customer</td>
-                                <td>{{proj.contract.customerName}} </td>
-                            </tr>
-                            <tr>
                                 <td class="ld" nowrap>ProjectId</td>
                                 <td>{{proj.projectId}}</td>
                             </tr>
                             <tr>
-                                <td class="ld" nowrap>Amount</td>
-                                <td>{{proj.contract.amt}}</td>
+                                <td class="ld" nowrap>Project Name</td>
+                                <td>{{proj.name}}</td>
                             </tr>
                             <tr>
-                                <td class="ld" nowrap>Currency</td>
-                                <td>{{proj.contract.currency}}</td>
+                                <td class="ld" nowrap>PM</td>
+                                <td>{{proj.pm.name}}</td>
+                            </tr>
+                            <tr>
+                                <td class="ld" nowrap>Completed Milestone</td>
+                                <td>{{proj.completedMilestone}}</td>
+                            </tr>
+                            <tr>
+                                <td class="ld" nowrap>Current Milestone</td>
+                                <td>{{proj.currentMilestone}}</td>
+                            </tr>
+                            <tr>
+                                <td class="ld" nowrap>Accumlate Receipt Accrual(%)</td>
+                                <td>{{proj.accComAccrual}}</td>
                             </tr>
                             <tr>
                                 <td class="ld" nowrap>Complete Milestones</td>
@@ -41,6 +45,14 @@
                                             {{ item }}
                                         </option>
                                     </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ld" nowrap>Accrual Entry %</td>
+                                <td>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <input type="text" class="col-md-12 col-xs-12" v-model="AccrualActual.accrual" id="accrual" name="accrual">
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
@@ -83,8 +95,8 @@
     export default {
         data(){
             return{
-                proj:{contract:{}},
-                AccrualActual:{completedMilestone:""},
+                proj:{pm:{}},
+                AccrualActual:{},
                 executing:false
             }
         },
@@ -107,15 +119,16 @@
         },
         methods:{
             backList:function(){
-                this.$router.push({name:"/im/listAccrualActual"});
+                this.$router.push({name:"listAccrualActual"});
             },
             saveAccrualActual:function()
             {
                 if(validateForm()){
                     this.executing=true;
                     let _self=this;
-                    $.post("/im/saveAccrualActual",{AccrualActual:this.AccrualActual}).done((rs)=>{
+                    $.post("/im/saveAccrualActual",{AccrualActual:this.AccrualActual,proj:this.proj}).done((rs)=>{
                         _self.AccrualActual=rs.AccrualActual;
+                        _self.proj=rs.proj;
                         _self.executing=false;
                         if(rs.err){
                             notify("Saved unsuccessful:" +rs.err,"","failure");

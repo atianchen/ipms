@@ -87,7 +87,9 @@
           return{
              proj:{contract:{}},
              CashinActual:{},
-             executing:false
+             executing:false,
+
+
           }
       },
        mounted:function(){
@@ -116,14 +118,15 @@
               if(validateForm()){
                   this.executing=true;
                   let _self=this;
-                  $.post("/im/saveCashinActual",{CashinActual:this.CashinActual}).done((rs)=>{
+                  $.post("/im/saveCashinActual",{CashinActual:this.CashinActual,proj:this.proj}).done((rs)=>{
                       _self.CashinActual=rs.CashinActual;
+                      _self.proj =rs.proj;
                       _self.executing=false;
                       if(rs.err){
                           notify("Saved unsuccessful:" +rs.err,"","failure");
                       }
                       else{
-                          notify("Saved successful:","","Successful")
+                          notify("Saved successful","","Successful")
                       }
                   }).fail(function(e){
                       _self.executing =false;

@@ -47,9 +47,9 @@
         data(){
             return{
                 q:{},
-                gridColumns:[{title:"ContractId",name:"contractId",click:"_id"},{title:"Project Name",name:"name"},{title:"Project Id",name:"projectId"},
-                    {title:"Customer",name:"customer"},{title:"Amount",name:"amount"},{title:"Currency",name:"currency"},{title:"Cash",name:"cash"},
-                     {title:"Cash-in Date",name:"cashindate",format:"DD/MM/YYYY"}, {title:"Entry Date",name:"entrydate",format:"DD/MM/YYYY"}],
+                gridColumns:[{title:"ContractId",name:"contract.contractId",click:"_id"},{title:"Project Name",name:"name"},{title:"Project Id",name:"projectId"},
+                    {title:"Customer Name",name:"contract.customerName"},{title:"Amount",name:"contract.amt"},{title:"Currency",name:"contract.currency"},{title:"Division",name:"contract.division"},
+                     {title:"Imp(%)",name:"contract.imp"}],
                 gridData:[],
                 page:{}
             }

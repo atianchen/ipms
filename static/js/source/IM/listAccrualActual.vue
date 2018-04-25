@@ -13,7 +13,7 @@
                         <ul>
                             <li>
                                 <div class="input-group">
-                                    <input type="text" class="form-control cold-md-2" v-model="q.contractId" placeholder="ContractId">
+                                    <input type="text" class="form-control cold-md-2" v-model="q.projectId" placeholder="projectId">
                                 </div>
                             </li>
                             <li>
@@ -43,10 +43,11 @@
     export default {
        data(){
            return{
-               q:{},
-               gridColumns:[{title:"ContractId",name:"contract.contractId",click:"_id"},{title:"Project Name",name:"name"},{title:"Project Id",name:"projectId"},
-                   {title:"Customer",name:"customer"},{title:"Amount",name:"amount"},{title:"Currency",name:"currency"},{title:"Cash",name:"cash"},
-                   {title:"Confirm Date",name:"confirmdate"}, {title:"Entry Date",name:"entrydate"}],
+               q:{person:[]},
+               gridColumns:[{title:"ProjectId",name:"projectId",click:'_id'},{title:"Project Name",name:"name",click:"_id"},{title:"Type",name:"type"},
+                   {title:"Progress",name:"progress"},{title:"Division",name:"division"}, {title:"PM",name:"pm.name"},{title:"Project Amount",name:"projAmt"},
+                   {title:"Completed Milestone",name:"completedMilestone"},{title:"Current Milestones",name:"currentMilestone"},
+                   {title:"Accumluated Completed Accrual",name:"accComAccrual"}],
                 gridData:[],
                 page:{}
                  }
@@ -59,13 +60,13 @@
            itemClick: function(param){
                this.$router.push({name:"accrualactual",params:{projId:param}})
            },
-           pagination: function(){
+           pagination: function(page){
                this.page.pn=page;
                this.pageSearch();
            },
            pageSearch: function(){
                let _self=this;
-               $.post("/im/listCashinAccrual",{q:util.qfilter(this.q),page:this.page}).done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;}).fail(function(){})
+               $.post("/im/listAccrualActual",{q:util.qfilter(this.q),page:this.page}).done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;}).fail(function(){})
            }
         },
         components:{
