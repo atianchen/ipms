@@ -28,20 +28,34 @@ router.post("/get",function(req,res)
 router.post("/save",function(req,res)
 {
     let p = new ProjectStatus();
-    wb.mappingObj(req,req.body.projectstatus,p,orm.operTypes.INSERT);
-    orm.insert(p,function(err,rs)
+    let p1 = req.body.projectstatus._id;
+    if(p1 !=null)
     {
-        res.json({data:rs});
-    });
+        orm.get(p.getCollection(),req.body.projectstatus._id,function(err,rs1)
+        {
+            Object.assign(p, rs1);
+            wb.mappingObj(req,req.body.projectstatus,p,orm.operTypes.UPDATE);
+            orm.update(p,req.body.projectstatus._id,function(rs2)
+                {}
+            );
+
+        });
+    }
+    else {
+        wb.mappingObj(req, req.body.projectstatus, p, orm.operTypes.INSERT);
+        orm.insert(p, function (err, rs) {
+            res.json({data: rs});
+        });
+    }
 });
 router.post("/update",function(req,res)
 {
     let p = new ProjectStatus();
     orm.get(p.getCollection(),req.body.projectstatus._id,function(err,rs)
     {
-        Object.assign(rs, p);
+        Object.assign(p, rs);
         wb.mappingObj(req,req.body.projectstatus,p,orm.operTypes.UPDATE);
-        orm.update(p,req.body.projectstatus._id,function(rs)
+        orm.update(p,req.body.projectstatus._id,function(rs1)
         {
             res.json({data:p});
         });
@@ -53,13 +67,14 @@ router.post("/update",function(req,res)
 router.post("/del",function(req,res)
 {
     let p = new ProjectStatus();
-    orm.delById(p.getCollection(),req.projectstatus._id,function(err,rs)
+    orm.delById(p.getCollection(),req.body.projectstatus._id,function(err,rs)
     {
-        if (err)
-            res.json({err:err});
+        if (err) {
+            console.log(err);
+            res.json({err: err});
+        }
         else
             res.json({data:rs});
     });
-
 });
 module.exports = router;
