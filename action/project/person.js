@@ -20,6 +20,7 @@ router.post("/list",function(req,res)
     orm.pagejoinquery(new Person(),["positionId"],q,page,function(err,rs)
     {
         res.json({page:page,data:rs,q:q});
+
     });
 
 });
@@ -146,7 +147,8 @@ router.post("/savePwd",function(req,res)
     {
         Object.assign(p, rs);
         p.pwd = encrypt.md5(req.body.pwd);
-        orm.update(p,p._id,function(err,result)
+        let id1 =p._id;
+        orm.update(p,id1,function(err,result)
         {
             res.json({data:p});
         });
