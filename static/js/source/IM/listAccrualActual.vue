@@ -17,6 +17,16 @@
                                 </div>
                             </li>
                             <li>
+                                <div class="input-group">
+                                    <select   placeholder="pm.name" v-model="q.pmId" id="q.pmId" name="q.pmId" class="form-control"  >
+                                        <option value="" disabled selected>Choose PM</option>
+                                        <option v-for="item in persons"  :value="item.userId ">
+                                            {{ item.userId }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li>
                                 <button type="button" class="btn btn-default" @click="pageSearch">Search</button>
                             </li>
                         </ul>
@@ -43,13 +53,15 @@
     export default {
        data(){
            return{
-               q:{person:[]},
+               q:{person:[],},
                gridColumns:[{title:"ProjectId",name:"projectId",click:'_id'},{title:"Project Name",name:"name",click:"_id"},{title:"Type",name:"type"},
                    {title:"Progress",name:"progress"},{title:"Division",name:"division"}, {title:"PM",name:"pm.name"},{title:"Project Amount",name:"projAmt"},
                    {title:"Completed Milestone",name:"completedMilestone"},{title:"Current Milestones",name:"currentMilestone"},
                    {title:"Accumluated Completed Accrual",name:"accComAccrual"}],
                 gridData:[],
-                page:{}
+                page:{},
+                projects:[],
+                persons:[]
                  }
             },
        created:function(){
@@ -66,7 +78,7 @@
            },
            pageSearch: function(){
                let _self=this;
-               $.post("/im/listAccrualActual",{q:util.qfilter(this.q),page:this.page}).done((rs)=>{_self.gridData=rs.data;_self.page=rs.page;}).fail(function(){})
+               $.post("/im/listAccrualActual",{q:util.qfilter(this.q),page:this.page}).done((rs)=>{_self.gridData=rs.data;_self.persons=rs.persons;_self.projects=rs.projects;_self.page=rs.page;}).fail(function(){})
            }
         },
         components:{
