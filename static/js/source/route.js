@@ -71,7 +71,9 @@ const routes=[
     { path: '/im/listCashinActual',name:'listCashinActual', component: resolve=>require(["./IM/listCashinActual.vue"],resolve)},
     { path: '/im/cashinActual/:projId',name:'cashinactual',component: resolve=>require(["./IM/cashinActual.vue"],resolve)},
     { path: '/im/listAccrualActual',name: 'listAccrualActual',component: resolve=>require(["./IM/listAccrualActual.vue"],resolve)},
-    { path: '/im/accrualactual/:projId',name: 'accrualactual',component: resolve=>require(["./IM/accrualActual.vue"],resolve)}
+    { path: '/im/accrualactual/:projId',name: 'accrualactual',component: resolve=>require(["./IM/accrualActual.vue"],resolve)},
+    { path: '/rpt/CashinActualReport',name: 'CashinActualReport',component: resolve=>require(["./rpt/CashinActualReport.vue"],resolve)},
+    { path: '/rpt/AccrualActualReport',name: 'AccrualActualReport',component: resolve=>require(["./rpt/AccrualActualReport.vue"],resolve)}
 
 ];
 export default new VueRouter({
