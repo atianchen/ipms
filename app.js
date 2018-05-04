@@ -75,6 +75,8 @@ app.use('/im',require('./action/IM/weekplan'));
 app.use('/im',require('./action/IM/caInvoiceActual'));
 app.use('/im',require('./action/IM/cashinactual'));
 app.use('/im',require('./action/IM/accrualActual'));
+app.use('/rpt',require('./action/report/cashinactualreport'));
+app.use('/rpt',require('./action/report/accrualactualreport'));
 
 const server = app.listen(3000, function () {
     let host = server.address().address;
