@@ -109,6 +109,7 @@ class  Contract extends Entity
             createUser:{type:INT},
             modifiedUser:{type:INT},
             modifiedDate:{type:DATE,format:"DD/MM/YYYY"}
+
         };
     }
     getCollection(){return "contract"};
@@ -480,7 +481,7 @@ class CashinActual{
             currency:{type:STRING},
             cash:{type:DOUBLE},
             cashindate:{type:Date},
-            entrydate:{type:Date}
+            entrydate:{type:Date, format:"DD/MM/YYYY"}
         };
 
     }
@@ -496,8 +497,8 @@ class AccrualActual{
             accComAccrual:{type:DOUBLE},
             completemilestone:{type:REF,join:{col:'milestone'},alias:'milestone'},
             accrual:{type:DOUBLE},
-            confirmdate:{type:DATE},
-            entryDate:{type:DATE}
+            confirmdate:{type:DATE,format:"DD/MM/YYYY"},
+            entrydate:{type:DATE,format:"DD/MM/YYYY"}
         };
 
     }
@@ -515,6 +516,9 @@ class Cashinforecast{
             amount:{type:DOUBLE},
             currency:{type:STRING},
             payment:{type:STRING},
+            forecastdate:{type:DATE,format:"DD/MM/YYYY"},
+            creationdate:{type:DATE,format:"DD/MM/YYYY"},
+            latestversion:{type:Bool},
             monthweek:{type:REFSET,join:{col:'MonthWeek'},alias:'monthweek'},
             weekcashforcast: {type:REFSET,join:{col:'weekcashforcast'},alias:'weekcash'}
         };
@@ -532,6 +536,9 @@ class Accrualforecast{
             amount:{type:DOUBLE},
             currency:{type:STRING},
             currentmilestone:{type:STRING},
+            forecastdate:{type:DATE,format:"DD/MM/YYYY"},
+            creationtime:{type:DATE,format:"DD/MM/YYYY"},
+            latestversion:{type:Bool},
             monthweek:{type:REFSET,join:{col:'MonthWeek'},alias:'MonthWeek'},
             weekaccrualforecast:{type:REFSET,join:{col:'weekaccrualforecast'},alias:'weekaccrualforecast'}
         };

@@ -51,7 +51,7 @@
                                            data-parsley-type="integer">
                                 </div>
                             </div>
-                      </div>
+                        </div>
 
                         <div class="row">
                             <div class="form-group col-md-6 col-sm-6">
@@ -61,7 +61,7 @@
 
                                     <select   placeholder="Choose S" v-model="contract.salesman" id="sales" name="sales" class="form-control"  >
                                         <option value="">Choose..</option>
-                                        <option v-for="item in persons"  :value="item.name">
+                                        <option v-for="item in persons"  :value="item._id">
                                             {{ item.name }}
                                         </option>
                                     </select>
@@ -77,7 +77,7 @@
                             </div>
                         </div>
 
-                      <div class="row">
+                        <div class="row">
                             <div class="form-group col-md-6 col-sm-6">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="productLine">ProductLine<span class="required">*</span>
                                 </label>
@@ -121,15 +121,14 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="amt">ContractAMT
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="number"  data-parsley-type="number"  v-model="contract.amt" id="amt" name="amt"  class="form-control">
+                                    <input type="text"  v-model="contract.amt" id="amt" name="amt"  class="form-control" >
                                 </div>
                             </div>
                             <div class="form-group col-md-6 col-sm-6 ">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="imp">Imp(%)
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="number"  data-parsley-type="number"  v-model="contract.imp" id="imp" name="imp"  class="form-control"
-                                           data-parsley-min="1" data-parsley-max="100">
+                                    <input type="text"   v-model="contract.imp" id="imp" name="imp"  class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -176,15 +175,16 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cashInOpen">Cash-In Opening
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="number" 	data-parsley-type="number" v-model="contract.cashInOpen" id="cashInOpen" name="cashInOpen"   class="form-control">
+                                    <input type="text" 	 v-model="contract.cashInOpen" id="cashInOpen" name="cashInOpen"   class="form-control"
+                                           >
                                 </div>
                             </div>
                             <div class="form-group col-md-6 col-sm-6 ">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="processOpen">Progress Opening(%)
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="number" 	data-parsley-type="number" v-model="contract.processOpen" id="processOpen" name="processOpen"   class="form-control"
-                                           data-parsley-min="0" data-parsley-max="100">
+                                    <input type="text" 	 v-model="contract.processOpen" id="processOpen" name="processOpen"   class="form-control"
+                                           >
                                 </div>
                             </div>
                         </div>
@@ -208,70 +208,67 @@
 </template>
 
 <script>
-import moment from 'moment'
-
-export default {
-  data () {
-    return {
-        currency:[],
-        contract:{},
-        method:"new",
-        divisions:[],
-        persons:[]
-    }
-  },
-  created:function(){
-    let _self=this;
-    if (this.$route.params && this.$route.params.contractId)
-    {
-        this.method="update";
-    }
-      $.post("/project/contract/get",(this.$route.params && this.$route.params.contractId)?{id:this.$route.params.contractId}:null).done((rs)=>{
-            if (rs.data)
-             _self.contract=rs.data;
-            _self.currency = rs.currency;
-            _self.persons=rs.persons;
-            _self.divisions = rs.divisions;
-           }).fail(function(){});
-  },
-  mounted:function(){
-    initFormValidate();
-  },
-  methods: {
-      backList:function()
-      {
-        this.$router.push('/project/contractList')
-      },
-    delContract:function()
-    {
-        let _self=this;
-        confirmOper("Prompt","Confirm delete",function()
-        {
-                $.post("/project/contract/del",{contract:_self.contract}).done((rs)=>{_self.method="new";_self.contract={}; notify("Delete successfully","","success");}).fail(function(){})
-        });
-    },
-    saveContract:function()
-    {
-        if (validateForm())
-        {
+    import moment from 'moment'
+    export default {
+        data () {
+            return {
+                currency:[],
+                contract:{},
+                method:"new",
+                divisions:[],
+                persons:[]
+            }
+        },
+        created:function(){
             let _self=this;
-            if (this.method=="new")
-              $.post("/project/contract/save",{contract:this.contract}).done((rs)=>{
-              if (rs.err)
-              {
-                notify("Saved Unsuccessful:"+rs.err,"","failure");
-              }
-              else
-              {
-                _self.method="update"; notify("Saved successfully","","success");
+            if (this.$route.params && this.$route.params.contractId)
+            {
+                this.method="update";
+            }
+            $.post("/project/contract/get",(this.$route.params && this.$route.params.contractId)?{id:this.$route.params.contractId}:null).done((rs)=>{
+                if (rs.data)
+                _self.contract=rs.data;
+                _self.currency = rs.currency;
+                _self.persons=rs.persons;
+                _self.divisions = rs.divisions;
+            }).fail(function(){});
+        },
+        mounted:function(){
+            initFormValidate();
+        },
+        methods: {
+            backList:function()
+            {
+                this.$router.push('/project/contractList')
+            },
+            delContract:function()
+            {
+                let _self=this;
+                confirmOper("Prompt","Confirm delete",function()
+                {
+                    $.post("/project/contract/del",{contract:_self.contract}).done((rs)=>{_self.method="new";_self.contract={}; notify("Delete successfully","","success");}).fail(function(){})
+                });
+            },
+            saveContract:function()
+            {
+                if (validateForm())
+                {
+                    let _self=this;
+                    if (this.method=="new")
+                        $.post("/project/contract/save",{contract:this.contract}).done((rs)=>{
+                            if (rs.err)
+                            {
+                                notify("Saved Unsuccessful:"+rs.err,"","failure");
+                            }
+                            else
+                            {
+                                _self.method="update"; notify("Saved successfully","","success");
+                            }
+                        }).fail(function(){})
+                    else
+                        $.post("/project/contract/update",{contract:this.contract}).done((rs)=>{ notify("Updated successfully","","success");}).fail(function(){})
                 }
-              }).fail(function(){})
-            else
-              $.post("/project/contract/update",{contract:this.contract}).done((rs)=>{ notify("Updated successfully","","success");}).fail(function(){})
+            }
         }
     }
-  }
-
-}
 </script>
-

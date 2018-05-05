@@ -92,8 +92,8 @@ router.post("/saveAccrualActual",function(req,res){
             orm.get(p.getCollection(),ca.projectId,function(err,rs){
                     Object.assign(p,rs);
                     p.completedMilestone =ca.completemilestone;
-                   console.log(p.accComAccrual);
-                   if(p.accComAccrual==null)
+                   console.log(isNaN(parseInt(P.accComAccrual)));
+                   if(isNaN(parseInt(P.accComAccrual)))
                    {
                        console.log(p.accComAccrual);
                        p.accComAccrual = parseFloat(0);

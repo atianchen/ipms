@@ -24,16 +24,6 @@
                             </li>
                             <li>
                                 <div class="input-group">
-                                    <input type="text" class="date-picker form-control  col-md-2" id="createDate1" v-model="createDate1" placeholder="CreateDate Start">
-                                </div>
-                            </li>
-                            <li>
-                                <div class="input-group">
-                                    <input type="text" class="date-picker form-control  col-md-2"  id="createDate2" v-model="createDate2" placeholder="CreateDate End">
-                                </div>
-                            </li>
-                            <li>
-                                <div class="input-group">
                                     <select   placeholder="Choose CustomerName" v-model="q.customerName" id="q.customerName" name="customerName" class="form-control"  >
                                         <option value="" disabled selected>Choose Customer</option>
                                         <option v-for="item in contracts" :value="item.customerName">
@@ -87,8 +77,6 @@ import moment from 'moment'
 export default {
   data () {
     return {
-    createDate1:null,
-    createDate2:null,
       q:{},
       contracts:[],
       gridColumns: [{title:"Contract ID",name:"contractId",click:"_id"},{title:"Signed Year",name:"signedYear"},{title:"Salesman",name:"salesMan"},{title:"Sales",name:"salesman"},
@@ -103,14 +91,6 @@ export default {
    mounted:function(){
     initForm();
     let _self = this;
-      bindCalendar( document.querySelector('#createDate1'),function(val)
-        {
-            _self.createDate1=moment(val).format("DD/MM/YYYY");
-        });
-    bindCalendar( document.querySelector('#createDate2'),function(val)
-        {
-            _self.createDate2=moment(val).format("DD/MM/YYYY");
-        });
   },
   created:function(){
         let _self=this;

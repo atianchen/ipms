@@ -12,7 +12,7 @@
                 </div>
                 <div class="x_content">
                     <br />
-                    <form  name="pwdForm" id="pwdForm"  class="form-horizontal form-label-left"   @submit.prevent="changePwd">
+                    <form  name="pwdForm" id="pwdForm" class="form-horizontal form-label-left"   @submit.prevent="changePwd">
 
                         <div class="form-group">
                             <label for="pwd" class="control-label col-md-3 col-sm-3 col-xs-12">New Password</label>
@@ -30,7 +30,6 @@
                                        data-parsley-equalto="#pwd" required data-parsley-equalto-message="Entered passwords differ from the another!">
                             </div>
                         </div>
-
 
 
                         <div class="ln_solid"></div>

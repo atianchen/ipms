@@ -36,38 +36,13 @@ router.post("/list",function(req,res)
     {
         q["productLine"]= {$regex: req.body.q.productLine.trim(), $options:'i'};
     }
-    if (!req.body.createDate1 ||  req.body.createDate1.toString().length<1) {
-        req.body.createDate1 = moment().subtract(3,"months");
-    }
-    else
-        req.body.createDate1 = wb.praseDate( req.body.createDate1);
-    if (!req.body.createDate2  ||  req.body.createDate2.toString().length<1) {
-        req.body.createDate2 = moment();
-    }
-    else
-        req.body.createDate2 = wb.praseDate( req.body.createDate2);
-    if (req.body.createDate1 || req.body.createDate2 )
-    {
-        let cq = {};
-        if (req.body.createDate1)
-        {
-            cq.$gte=req.body.createDate1.unix();
-        }
-        if (req.body.createDate2 )
-        {
-            cq.$lte=req.body.createDate2.unix();
-        }
-        q.createDate=cq;
-    }
+
     page.sort={contractId:1};
     q.division = {$in:appContext.getLoginUser(req).divisions};
+    //console.log(q);
     orm.pagingquery(new Contract(),q,page,function(err,rs)
     {
         let model = {page:page,data:rs};
-        if (req.body.createDate1)
-            model.createDate1=wb.formatDate(req.body.createDate1);
-        if (req.body.createDate2)
-            model.createDate2=wb.formatDate(req.body.createDate2);
         orm.find((new Contract()).getCollection(),{},{contractId:1},(err,contracts)=>{
             model.contracts = contracts;
             res.json(model);
@@ -90,29 +65,29 @@ router.post("/get",function(req,res)
         }
         else {
             orm.find((new Person()).getCollection(),{},{name:1},function(err,persons) {
-                    if(err)
-                       res.json({err:err});
-                    else {
-                        orm.find((new Division()).getCollection(), {}, {code: 1}, function (err, divisions) {
-                            if (err)
-                                res.json({err: err});
-                            else {
-                                model.currency = rs;
-                                model.persons=persons;
-                                model.divisions = divisions;
-                                if (req.body && req.body.id) {
-                                    orm.get((new Contract()).getCollection(), req.body.id, function (err, rs) {
-                                        model.data = rs;
-                                        res.json(model);
-                                    });
-                                }
-                                else {
+                if(err)
+                    res.json({err:err});
+                else {
+                    orm.find((new Division()).getCollection(), {}, {code: 1}, function (err, divisions) {
+                        if (err)
+                            res.json({err: err});
+                        else {
+                            model.currency = rs;
+                            model.persons=persons;
+                            model.divisions = divisions;
+                            if (req.body && req.body.id) {
+                                orm.get((new Contract()).getCollection(), req.body.id, function (err, rs) {
+                                    model.data = rs;
                                     res.json(model);
-                                }
+                                });
                             }
-                        });
-                    }
-                });
+                            else {
+                                res.json(model);
+                            }
+                        }
+                    });
+                }
+            });
         }
     });
 
@@ -155,6 +130,9 @@ router.post("/update",function(req,res)
     orm.get(p.getCollection(),req.body.contract._id,function(err,rs)
     {
         Object.assign(rs, p);
+       // p.amt = parseFloat(req.body.contract.amt);
+        //p.cashInOpen  = parseFloat(req.body.contract.cashInOpen);
+        //p.processOpen =parseFloat(req.body.contract.processOpen);
         wb.mappingObj(req,req.body.contract,p,orm.operTypes.UPDATE);
         if (p.imp) {
             p.cus = 100 - p.imp;
