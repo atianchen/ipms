@@ -7,7 +7,7 @@ module.exports = {
       path:path.resolve(__dirname,'./static/js/dist'),
       filename: "main.js",
       publicPath: '/js/dist/',
-      chunkFilename: "[id].[name].[chunkHash].js"
+      chunkFilename: "[id].[name].js"
   },
   module: {
     rules: [
