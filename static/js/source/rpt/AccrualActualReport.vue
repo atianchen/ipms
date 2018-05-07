@@ -52,7 +52,7 @@
                 q:{},
                 entrydate1: null,
                 entrydate2: null,
-                gridColumns: [{title:'Project Name',name:'q.project.name'},{title:'ProjectId',name:'q.project.projectId'},{title:'Completed Milestone',name:'completemilestone'},{title:'Accumlated Completed Accrual',name:'accComAccrual'},{title:'Accrual(%)',name:'accrual'},{title:'Entry Date',name:'entrydate'}],
+                gridColumns: [{title:'Project Name',name:'q.project.name'},{title:'ProjectId',name:'q.project.projectId'},{title:'Completed Milestone',name:'completemilestone'},{title:'Accumlated Completed Accrual',name:'accComAccrual'},{title:'Accrual(%)',name:'accrual'},{title:'Entry Date',name:'entrydate',type:"date",format:"DD/MM/YYYY"}],
                 gridData: [],
                 page: {}
             }
