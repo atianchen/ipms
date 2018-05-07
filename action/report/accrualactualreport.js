@@ -12,6 +12,7 @@ const {AccrualActual,Project,Contract} = require('../../domain/model');
 router.post("/AccrualActualReport",function(req,res){
     let page = wb.getPagination(req);
     let q=req.body.q||{};
+
     let model = {};
       if(!req.body.entrydate1||req.body.entrydate1.toString().length<1){
 
@@ -43,8 +44,10 @@ router.post("/AccrualActualReport",function(req,res){
         q.entrydate=cq;
     }
    page.sort = {entrydate:-1};
-   console.log(q);
-   orm.pagejoinquery(new AccrualActual(),[],q, page, function(err,rs){
+   //console.log(req.body);
+     orm.pagejoinquery(new AccrualActual(),["ProjectId"],q, page, function(err,rs){
+     //orm.aliasGet(new AccrualActual(),["project"],q,function(err,rs){
+        console.log(rs);
         if (req.body.entrydate1)
             model.entrydate1 = wb.formatDate(req.body.entrydate1);
         if (req.body.entrydate2)
